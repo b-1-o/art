@@ -19,7 +19,7 @@ export type Artwork = {
   accent: string
 }
 
-const commons = 'https://commons.wikimedia.org/wiki/Special:FilePath/'
+const commons = 'https://commons.wikimedia.org/wiki/Special:FilePath/File:'
 
 export const artworks: Artwork[] = [
   {
