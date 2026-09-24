@@ -161,7 +161,7 @@ function Intro({ eyebrow, title, body }: { eyebrow: string; title: ReactNode; bo
 function Image({ artwork, className = '', priority = false }: { artwork: Artwork; className?: string; priority?: boolean }) {
   const [failed, setFailed] = useState(false)
   const style = { '--art-accent': artwork.accent } as CSSProperties
-  return <div className={'art-image ' + className} style={style}>{failed ? <div className="image-fallback"><span>{artwork.title.charAt(0)}</span><small>IMAGE PREVIEW</small></div> : <img src={artwork.image} alt={artwork.title} loading={priority ? 'eager' : 'lazy'} decoding="async" onError={() => setFailed(true)} />}<small className="image-credit"><a href={artwork.creditUrl} target="_blank" rel="noreferrer">{artwork.credit}</a></small></div>
+  return <div className={'art-image ' + className} style={style}>{failed ? <div className="image-fallback"><span>{artwork.title.charAt(0)}</span><small>IMAGE PREVIEW</small></div> : <img src={artwork.image} alt={artwork.title} loading={priority ? 'eager' : 'lazy'} fetchPriority={priority ? 'high' : 'auto'} decoding="async" sizes={priority ? '100vw' : '(max-width: 640px) 92vw, (max-width: 980px) 46vw, 30vw'} width={1600} height={1200} onError={() => setFailed(true)} />}<small className="image-credit"><a href={artwork.creditUrl} target="_blank" rel="noreferrer">{artwork.credit}</a></small></div>
 }
 
 function Card({ artwork, compact = false }: { artwork: Artwork; compact?: boolean }) {
