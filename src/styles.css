@@ -2930,3 +2930,288 @@ button, input, textarea, select {
     color: #81928a;
   }
 }
+
+
+/* ===== EXPERIENCE SYSTEM / ROUTES / CONTROLS ===== */
+
+.page {
+  animation: aer-route-in .52s cubic-bezier(.2,.72,.2,1) both;
+  transform-origin: 50% 0;
+}
+@keyframes aer-route-in {
+  from { opacity: 0; transform: translate3d(0, 16px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+.desktop-nav button {
+  position: relative;
+  transition: color .25s ease, opacity .25s ease, transform .25s ease;
+}
+.desktop-nav button::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -9px;
+  height: 1px;
+  background: #bda06a;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform .32s cubic-bezier(.2,.75,.2,1);
+}
+.desktop-nav button:hover {
+  color: #dbe2dd;
+  transform: translateY(-1px);
+}
+.desktop-nav button:hover::after,
+.desktop-nav button.active::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+.catalog-trigger,
+.bag-trigger,
+.menu-trigger,
+.dark-button,
+.light-button,
+.outline-button,
+.text-button,
+.showroom-link,
+.showroom-reset,
+.showroom-controls button {
+  transition:
+    transform .24s cubic-bezier(.2,.75,.2,1),
+    color .24s ease,
+    border-color .24s ease,
+    background-color .24s ease,
+    box-shadow .24s ease;
+}
+.catalog-trigger:hover,
+.bag-trigger:hover,
+.menu-trigger:hover,
+.outline-button:hover,
+.showroom-reset:hover {
+  transform: translateY(-2px);
+}
+.catalog-trigger:active,
+.bag-trigger:active,
+.menu-trigger:active,
+.dark-button:active,
+.light-button:active,
+.outline-button:active,
+.text-button:active,
+.showroom-link:active,
+.showroom-reset:active,
+.showroom-controls button:active {
+  transform: translateY(0) scale(.97);
+}
+
+.dark-button,
+.light-button,
+.outline-button {
+  position: relative;
+  overflow: hidden;
+}
+.dark-button::after,
+.light-button::after,
+.outline-button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(100deg, transparent 0 42%, rgba(255,255,255,.08) 50%, transparent 58%);
+  transform: translateX(-130%);
+  transition: transform .7s cubic-bezier(.2,.75,.2,1);
+}
+.dark-button:hover::after,
+.light-button:hover::after,
+.outline-button:hover::after {
+  transform: translateX(130%);
+}
+.dark-button svg,
+.light-button svg,
+.outline-button svg,
+.text-button svg,
+.showroom-link svg,
+.catalog-trigger svg,
+.bag-trigger svg {
+  transition: transform .24s cubic-bezier(.2,.75,.2,1);
+}
+.dark-button:hover svg,
+.light-button:hover svg,
+.outline-button:hover svg,
+.text-button:hover svg,
+.showroom-link:hover svg,
+.catalog-trigger:hover svg,
+.bag-trigger:hover svg {
+  transform: translate3d(3px,-2px,0);
+}
+
+.catalog-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid rgba(113,132,122,.22);
+  color: #a9b9b1;
+  background: transparent;
+  font: 8px 'DM Mono', monospace;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.bag-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.bag-trigger i {
+  min-width: 18px;
+  height: 18px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 999px;
+  background: #bda06a;
+  color: #090b0a;
+  font: 8px 'DM Mono', monospace;
+  font-style: normal;
+}
+
+.showroom-stage {
+  overscroll-behavior: contain;
+}
+.showroom-stage::before {
+  content: "SCROLL";
+  position: absolute;
+  z-index: 18;
+  top: 5%;
+  right: 5%;
+  color: #52615b;
+  font: 7px 'DM Mono', monospace;
+  letter-spacing: .16em;
+  pointer-events: none;
+  opacity: .78;
+}
+.showroom-stage:hover::before {
+  color: #81928a;
+}
+.showroom-controls {
+  box-shadow: 0 14px 42px rgba(0,0,0,.2);
+}
+.art-plane {
+  transition:
+    transform .72s cubic-bezier(.2,.75,.2,1),
+    opacity .36s ease,
+    box-shadow .36s ease;
+}
+.plane-main {
+  animation: hero-float 8s ease-in-out infinite;
+}
+.plane-main.showroom-interactive:hover {
+  box-shadow: 0 28px 80px rgba(0,0,0,.45), 0 0 0 1px rgba(189,160,106,.18);
+}
+.plane-left.showroom-interactive:hover,
+.plane-right.showroom-interactive:hover,
+.plane-depth.showroom-interactive:hover {
+  transform: translate3d(var(--plane-x,0), var(--plane-y,0), var(--plane-z,0)) scale(1.025);
+}
+
+.catalogue-headline {
+  display: grid;
+  grid-template-columns: minmax(220px,.8fr) minmax(0,1.2fr);
+  gap: 32px;
+  align-items: end;
+  padding: 0 0 26px;
+  border-bottom: 1px solid rgba(113,132,122,.14);
+  margin-bottom: 24px;
+}
+.catalogue-headline > div {
+  display: grid;
+  gap: 9px;
+}
+.catalogue-headline span {
+  color: #64756d;
+  font: 8px 'DM Mono', monospace;
+  letter-spacing: .14em;
+}
+.catalogue-headline strong {
+  color: #edf0eb;
+  font: 28px 'Playfair Display', serif;
+  letter-spacing: -.02em;
+}
+.catalogue-headline p {
+  max-width: 470px;
+  justify-self: end;
+  margin: 0;
+  color: #64756d;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.drawer-backdrop {
+  animation: aer-drawer-fade .32s ease both;
+}
+.bag-drawer {
+  animation: aer-drawer-in .46s cubic-bezier(.2,.75,.2,1) both;
+}
+@keyframes aer-drawer-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes aer-drawer-in {
+  from { opacity: 0; transform: translate3d(28px, 0, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+.bag-item {
+  transition: background-color .22s ease, transform .22s ease;
+}
+.bag-item:hover {
+  background: rgba(113,132,122,.05);
+  transform: translate3d(4px,0,0);
+}
+
+@media (max-width: 820px) {
+  .catalogue-headline {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .catalogue-headline p {
+    justify-self: start;
+  }
+  .showroom-stage::before {
+    display: none;
+  }
+}
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .page,
+  .bag-drawer,
+  .drawer-backdrop {
+    animation: none !important;
+  }
+  .desktop-nav button,
+  .catalog-trigger,
+  .bag-trigger,
+  .menu-trigger,
+  .dark-button,
+  .light-button,
+  .outline-button,
+  .text-button,
+  .showroom-link,
+  .showroom-reset,
+  .showroom-controls button,
+  .art-plane,
+  .bag-item,
+  .desktop-nav button::after,
+  .dark-button::after,
+  .light-button::after,
+  .outline-button::after,
+  .dark-button svg,
+  .light-button svg,
+  .outline-button svg,
+  .text-button svg,
+  .showroom-link svg,
+  .catalog-trigger svg,
+  .bag-trigger svg {
+    transition: none !important;
+  }
+}
