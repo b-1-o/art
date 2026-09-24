@@ -126,7 +126,7 @@ function Intro({ eyebrow, title, body }: { eyebrow: string; title: ReactNode; bo
 function Image({ artwork, className = '', priority = false }: { artwork: Artwork; className?: string; priority?: boolean }) {
   const [failed, setFailed] = useState(false)
   const style = { '--art-accent': artwork.accent } as CSSProperties
-  return <div className={'art-image ' + className} style={style}>{failed ? <div className="image-fallback"><span>{artwork.title.charAt(0)}</span><small>IMAGE PREVIEW</small></div> : <img src={artwork.image + (artwork.image.includes('?') ? '&' : '?') + 'width=' + (priority ? 1280 : 960)} alt={artwork.title} loading={priority ? 'eager' : 'lazy'} fetchPriority={priority ? 'high' : 'auto'} decoding="async" sizes={priority ? '100vw' : '(max-width: 640px) 92vw, (max-width: 980px) 46vw, 30vw'} width={1600} height={1200} onError={() => setFailed(true)} />}<small className="image-credit"><a href={artwork.creditUrl} target="_blank" rel="noreferrer">{artwork.credit}</a></small></div>
+  return <div className={'art-image ' + className} style={style}>{failed ? <div className="image-fallback"><span>{artwork.title.charAt(0)}</span><small>IMAGE PREVIEW</small></div> : <img src={artwork.image} alt={artwork.title} loading={priority ? 'eager' : 'lazy'} fetchPriority={priority ? 'high' : 'auto'} decoding="async" sizes={priority ? '100vw' : '(max-width: 640px) 92vw, (max-width: 980px) 46vw, 30vw'} width={1600} height={1200} onError={() => setFailed(true)} />}<small className="image-credit"><a href={artwork.creditUrl} target="_blank" rel="noreferrer">{artwork.credit}</a></small></div>
 }
 
 function Card({ artwork, compact = false }: { artwork: Artwork; compact?: boolean }) {
@@ -143,7 +143,7 @@ function Home({ onNavigate }: { onNavigate: (p: string) => void }) {
 
     <section className="section manifesto"><div className="eyebrow-row"><span>THE STUDIO NOTE</span><span>01 / 06</span></div><div className="manifesto-grid"><h2>Form can be silent<br /><em>and still command the room.</em></h2><div><p>Geometric studies, colour fields and symbolic forms from the early language of abstraction.</p><button className="text-button" onClick={() => onNavigate('/studio')}>Inside the studio <ArrowUpRight size={15} /></button></div></div></section>
 
-    <section className="section featured"><div className="section-heading"><div><p className="eyebrow">SELECTED ABSTRACTIONS</p><h2>Selected <em>abstractions.</em></h2></div><button className="outline-button" onClick={() => onNavigate('/works')}>View catalogue <ArrowRight size={15} /></button></div><div className="featured-grid">{artworks.filter((a) => a.featured).map((a) => <Card key={a.id} artwork={a} />)}</div></section>
+    <section className="section featured"><div className="section-heading"><div><p className="eyebrow">SELECTED ABSTRACTIONS</p><h2>Selected <em>abstractions.</em></h2></div><button className="outline-button" onClick={() => onNavigate('/works')}>View catalogue <ArrowRight size={15} /></button></div><div className="featured-grid">{artworks.filter((a) => a.featured).slice(0, 6).map((a) => <Card key={a.id} artwork={a} />)}</div></section>
 
     <section className="collection-band"><div className="band-index">02 / 03</div><div><p className="eyebrow">PRIVATE COLLECTION</p><h2>BLACK<br /><em>GALLERY.</em></h2></div><div><p>A curated room of paintings, reduced to light, surface, scale and silence — presented without visual noise.</p><button className="light-button" onClick={() => onNavigate('/works')}>Enter collection <ArrowUpRight size={15} /></button></div></section>
 
