@@ -9,7 +9,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "framer-motion": "latest",
     "lucide-react": "latest",
     "react": "latest",
     "react-dom": "latest"
