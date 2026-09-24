@@ -1,7 +1,6 @@
 
 import { type FormEvent, type ReactNode, useEffect, useMemo, useState } from 'react'
 import type { CSSProperties } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Check, ChevronDown, ExternalLink, Menu, Minus, Plus, ShoppingBag, X } from 'lucide-react'
 import { artworks, collections, courses, navItems, studioFacts, type Artwork, type ArtworkCategory } from './data'
 
@@ -93,17 +92,13 @@ export default function App() {
       <div className="noise" aria-hidden="true" />
       <Header path={path} bagCount={bag.length} menu={menu} setMenu={setMenu} onBag={() => setBagOpen(true)} />
       <main id="main-content">
-        <AnimatePresence mode="wait">
-          <motion.div key={location} className="page" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}>
-            {body}
-          </motion.div>
-        </AnimatePresence>
+        <div key={location} className="page page-static">
+          {body}
+        </div>
       </main>
       <Footer />
-      <AnimatePresence>
-        {bagOpen && <BagDrawer bag={bag} onClose={() => setBagOpen(false)} onRemove={remove} onCheckout={() => { setBagOpen(false); go('/contact'); setToast('Inquiry bag ready — complete the form below.') }} />}
-      </AnimatePresence>
-      <AnimatePresence>{toast && <motion.div className="toast" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>{toast}<Check size={14} /></motion.div>}</AnimatePresence>
+      {bagOpen && <BagDrawer bag={bag} onClose={() => setBagOpen(false)} onRemove={remove} onCheckout={() => { setBagOpen(false); go('/contact'); setToast('Inquiry bag ready — complete the form below.') }} />}
+      {toast && <div className="toast">{toast}<Check size={14} /></div>}
     </div>
   )
 }
@@ -147,9 +142,7 @@ function Header({ path, bagCount, menu, setMenu, onBag }: { path: Path; bagCount
           <button className="menu-trigger" onClick={() => setMenu(!menu)} aria-label="Toggle menu">{menu ? <X size={18} /> : <Menu size={18} />}</button>
         </div>
       </header>
-      <AnimatePresence>
-        {menu && <motion.div className="mobile-menu" initial={{ opacity: 0, y: -18 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -18 }}><div><p>MENU / 06</p>{navItems.map(([href, label], i) => <button key={href} onClick={() => go(href)}><span>0{i + 1}</span><b>{label}</b><ArrowUpRight size={16} /></button>)}</div></motion.div>}
-      </AnimatePresence>
+      {menu && <div className="mobile-menu"><div><p>MENU / 06</p>{navItems.map(([href, label], i) => <button key={href} onClick={() => go(href)}><span>0{i + 1}</span><b>{label}</b><ArrowUpRight size={16} /></button>)}</div></div>}
     </>
   )
 }
@@ -166,10 +159,10 @@ function Image({ artwork, className = '', priority = false }: { artwork: Artwork
 
 function Card({ artwork, compact = false }: { artwork: Artwork; compact?: boolean }) {
   const price = artwork.status === 'Sold' ? 'MUSEUM / ARCHIVE' : artwork.status === 'Edition' ? 'LIMITED EDITION' : 'PRIVATE VIEWING'
-  return <motion.article className={'art-card ' + (compact ? 'compact' : '')} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.12 }} transition={{ duration: 0.55 }}>
+  return <article className={'art-card ' + (compact ? 'compact' : '')}>
     <button className="art-card-image" onClick={() => go('/works/' + artwork.id)}><Image artwork={artwork} /><span className="card-index">{artwork.number}</span><span className="card-arrow"><ArrowUpRight size={16} /></span></button>
     <div className="art-card-meta"><div><p>{artwork.category} / {artwork.year}</p><h3>{artwork.title}</h3><span>{artwork.subtitle}</span></div><strong>{price}</strong></div>
-  </motion.article>
+  </article>
 }
 
 function Home({ onNavigate }: { onNavigate: (p: string) => void }) {
@@ -216,7 +209,7 @@ function Learn({ onNavigate }: { onNavigate: (p: string) => void }) {
 
 function Faq({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false)
-  return <div className={'faq ' + (open ? 'open' : '')}><button onClick={() => setOpen(!open)} aria-expanded={open}><span>{q}</span>{open ? <Minus size={17} /> : <Plus size={17} />}</button><AnimatePresence initial={false}>{open && <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}><p>{a}</p></motion.div>}</AnimatePresence></div>
+  return <div className={'faq ' + (open ? 'open' : '')}><button onClick={() => setOpen(!open)} aria-expanded={open}><span>{q}</span>{open ? <Minus size={17} /> : <Plus size={17} />}</button>{open && <div className="faq-answer"><p>{a}</p></div>}</div>
 }
 
 function Studio({ onNavigate }: { onNavigate: (p: string) => void }) {
@@ -232,7 +225,7 @@ function Contact({ onNavigate }: { onNavigate: (p: string) => void }) {
 function BagDrawer({ bag, onClose, onRemove, onCheckout }: { bag: string[]; onClose: () => void; onRemove: (id: string) => void; onCheckout: () => void }) {
   const items = bag.map((id, index) => { const item = artworks.find((a) => a.id === id); return item ? { item, key: item.id + '-' + index } : null }).filter(Boolean) as { item: Artwork; key: string }[]
   const total = items.reduce((sum, entry) => sum + entry.item.price, 0)
-  return <motion.div className="drawer-backdrop" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}><motion.aside className="bag-drawer" initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }} onClick={(e) => e.stopPropagation()}><header><div><p className="eyebrow">INQUIRY BAG</p><h2>{items.length} {items.length === 1 ? 'work' : 'works'}</h2></div><button onClick={onClose}><X size={19} /></button></header><div className="bag-items">{items.length === 0 && <div className="empty-cart"><ShoppingBag size={22} /><p>Your bag is empty.</p><span>Add a work from the catalogue to start an inquiry.</span></div>}{items.map((entry) => <div className="bag-item" key={entry.key}><div className="bag-thumb"><Image artwork={entry.item} /></div><div><p>{entry.item.category}</p><h3>{entry.item.title}</h3><strong>{String.fromCharCode(36)}{entry.item.price.toLocaleString()}</strong></div><button onClick={() => onRemove(entry.item.id)}><X size={14} /></button></div>)}</div><footer><div><span>Estimated value</span><strong>{items.length ? '$' + total.toLocaleString() : '$0'}</strong></div><button className="dark-button full-width" disabled={!items.length} onClick={onCheckout}>Continue to inquiry <ArrowRight size={15} /></button><small>No payment is taken here. The studio confirms availability, shipping and framing first.</small></footer></motion.aside></motion.div>
+  return <div className="drawer-backdrop" onClick={onClose}><aside className="bag-drawer" onClick={(e) => e.stopPropagation()}><header><div><p className="eyebrow">INQUIRY BAG</p><h2>{items.length} {items.length === 1 ? 'work' : 'works'}</h2></div><button onClick={onClose}><X size={19} /></button></header><div className="bag-items">{items.length === 0 && <div className="empty-cart"><ShoppingBag size={22} /><p>Your bag is empty.</p><span>Add a work from the catalogue to start an inquiry.</span></div>}{items.map((entry) => <div className="bag-item" key={entry.key}><div className="bag-thumb"><Image artwork={entry.item} /></div><div><p>{entry.item.category}</p><h3>{entry.item.title}</h3><strong>{String.fromCharCode(36)}{entry.item.price.toLocaleString()}</strong></div><button onClick={() => onRemove(entry.item.id)}><X size={14} /></button></div>)}</div><footer><div><span>Estimated value</span><strong>{items.length ? '$' + total.toLocaleString() : '$0'}</strong></div><button className="dark-button full-width" disabled={!items.length} onClick={onCheckout}>Continue to inquiry <ArrowRight size={15} /></button><small>No payment is taken here. The studio confirms availability, shipping and framing first.</small></footer></aside></div>
 }
 
 function NotFound({ onNavigate }: { onNavigate: (p: string) => void }) { return <div className="page-wrap not-found"><span>404</span><h1>This room<br /><em>doesn’t exist.</em></h1><button className="dark-button" onClick={() => onNavigate('/')}>Return to index <ArrowLeft size={15} /></button></div> }
