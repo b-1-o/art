@@ -286,10 +286,6 @@ function WorkDetail({ artwork, onBack, add }: { artwork: Artwork; onBack: () => 
   return <div className="page-wrap detail-page"><button className="back-link" onClick={onBack}><ArrowLeft size={15} /> Back to works</button><section className="detail-hero"><Image artwork={artwork} priority /><div className="detail-sidebar"><p className="eyebrow">{artwork.number} / {artwork.category}</p><h1>{artwork.title}</h1><p className="detail-subtitle">{artwork.subtitle}</p><div className="detail-divider" /><dl className="specs"><div><dt>Year</dt><dd>{artwork.year}</dd></div><div><dt>Medium</dt><dd>{artwork.medium}</dd></div><div><dt>Size</dt><dd>{artwork.dimensions}</dd></div><div><dt>Status</dt><dd>{artwork.status}</dd></div></dl><p className="detail-description">{artwork.description}</p><div className="detail-purchase"><div><small>Collection record</small><strong>PUBLIC DOMAIN / ARCHIVE</strong></div>{artwork.status !== 'Sold' && <button className="dark-button" onClick={() => go('/contact')}>Private viewing <ArrowUpRight size={15} /></button>}</div></div></section><section className="section-tight detail-notes"><div><p className="eyebrow">THE NOTE</p><h2>“The piece should feel like a room you remember without knowing why.”</h2></div><div><p>Works are shipped with a signed studio certificate and catalogue entry. Framing and international shipping are quoted separately.</p><button className="text-button" onClick={() => go('/contact')}>Ask about this work <ArrowUpRight size={15} /></button></div></section>{related.length > 0 && <section className="section related"><div className="section-heading"><div><p className="eyebrow">CONTINUE LOOKING</p><h2>More from <em>this series.</em></h2></div></div><div className="featured-grid">{related.map((a) => <Card key={a.id} artwork={a} compact />)}</div></section>}</div>
 }
 
-function archivePrice(index: number) {
-  return 95 + index * 35
-}
-
 function Shop({ onNavigate, add }: { onNavigate: (p: string) => void; add: (a: Artwork) => void }) {
   const items = artworks.slice(0, 9)
   return <div className="page-wrap shop-page">
@@ -305,7 +301,7 @@ function Shop({ onNavigate, add }: { onNavigate: (p: string) => void; add: (a: A
         <div className="vault-info">
           <div><p>{a.subtitle}</p><h3>{a.title}</h3><span>{a.year} / {a.medium}</span></div>
           <div className="vault-buy">
-            <strong>$${archivePrice(i)}</strong>
+            <strong>${a.price.toLocaleString()}</strong>
             <button className="dark-button small-dark" onClick={() => add(a)}>Add edition <Plus size={13} /></button>
           </div>
         </div>
