@@ -1831,3 +1831,436 @@ body,
     transition: none !important;
   }
 }
+
+
+/* AER / HARD RESET: ONYX + DEEP GREY-GREEN */
+:root {
+  --paper: #070908;
+  --paper-deep: #0b100d;
+  --ink: #edf0eb;
+  --muted: #627067;
+  --line: rgba(113, 132, 122, .18);
+  --line-soft: rgba(113, 132, 122, .09);
+  --cream: #0c110e;
+  --dark: #040605;
+  --accent: #bda06a;
+  --secondary: #34473f;
+  --secondary-text: #64756d;
+  --secondary-strong: #81928a;
+}
+
+html,
+body,
+.app,
+.page,
+.page-wrap,
+.section,
+.section-tight,
+.featured,
+.manifesto,
+.catalogue,
+.page-intro,
+.detail-page,
+.detail-hero,
+.education-cta,
+.studio-feature,
+.facts-grid,
+.process,
+.shipping-note,
+.learn-intro,
+.learn-faq,
+.related,
+.contact-grid,
+.shop-grid {
+  background: #070908 !important;
+  color: var(--ink) !important;
+}
+
+body {
+  overflow-x: clip;
+}
+
+.noise,
+.botanical-veil,
+.hero-light,
+.hero-botanical,
+.section-botanical,
+.band-botanical,
+.education-botanical,
+.studio-botanical,
+.shop-grid::before,
+.shop-card::after,
+.art-card::before {
+  display: none !important;
+}
+
+.page-intro {
+  background: #070908 !important;
+  border-bottom: 1px solid var(--line) !important;
+}
+
+.page-intro::after {
+  display: none !important;
+}
+
+.manifesto,
+.featured,
+.detail-page {
+  background: #070908 !important;
+}
+
+.collection-band {
+  background:
+    linear-gradient(135deg, #050806 0%, #111a16 52%, #060807 100%) !important;
+  border-top: 1px solid rgba(113,132,122,.16) !important;
+  border-bottom: 1px solid rgba(113,132,122,.16) !important;
+}
+
+.site-header {
+  background: rgba(5,8,6,.97) !important;
+  border-bottom-color: rgba(113,132,122,.13) !important;
+  box-shadow: none !important;
+}
+
+.site-footer {
+  background: #040605 !important;
+  border-top-color: rgba(113,132,122,.14) !important;
+}
+
+/* Remove the remaining warm beige/cream visual language. */
+h1, h2, h3, h4, p, span, small, strong, dt, dd, label, a,
+button, input, textarea, select {
+  text-shadow: none;
+}
+
+.intro-body,
+.manifesto-grid > div > p,
+.collection-row p,
+.hero-note,
+.hero-bottom,
+.shop-card-body > div > p,
+.shop-card-body span,
+.shipping-grid p,
+.learn-method-list p,
+.process-row p,
+.course-main span,
+.studio-copy > p:not(.eyebrow),
+.studio-credit p,
+.contact-detail p,
+.contact-detail a,
+.detail-description,
+.collection-band p,
+.detail-notes > div:last-child > p,
+.faq-answer p,
+.form-success,
+.empty-cart span,
+.bag-item p,
+.sort-select span,
+.filter-row button,
+.course-main > p,
+.specs dt,
+.detail-purchase small,
+.art-card-meta > div > p,
+.art-card-meta span,
+.shop-card-body > div > p {
+  color: var(--secondary-text) !important;
+}
+
+.eyebrow,
+.eyebrow-row,
+.page-intro > p,
+.hero-kicker,
+.image-credit,
+.collection-row > span,
+.collection-row > b,
+.course-index,
+.facts-grid span,
+.contact-detail span,
+.card-index {
+  color: var(--secondary-strong) !important;
+}
+
+.hero-title > p,
+.hero-title > p em,
+.hero h1 em,
+.page-intro h1 em,
+.section-heading h2 em,
+.manifesto h2 em,
+.collection-band h2 em,
+.education-cta h2 em,
+.learn-statement h2 em,
+.course-list h2 em,
+.shipping-note h2 em,
+.process h2 em,
+.studio-copy h2 em,
+.studio-credit h2 em,
+.detail-sidebar h1 em,
+.detail-notes h2 em,
+.not-found h1 em {
+  color: #91a39a !important;
+}
+
+.art-card-meta h3,
+.shop-card-body h3,
+.course-main h3,
+.process-row h3,
+.collection-row h3,
+.detail-sidebar h1,
+.page-intro h1,
+.section-heading h2,
+.manifesto h2,
+.education-cta h2,
+.learn-statement h2,
+.course-list h2,
+.shipping-note h2,
+.process h2,
+.studio-credit h2,
+.detail-notes h2,
+.not-found h1 {
+  color: #edf0eb !important;
+}
+
+.art-card-meta strong,
+.shop-card-bottom strong,
+.detail-purchase strong {
+  color: #bda06a !important;
+}
+
+/* Gallery: museum frames, stable dimensions, no random cropping. */
+.art-card-image,
+.shop-card .art-image,
+.detail-hero > .art-image,
+.bag-thumb .art-image {
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: #0a0e0c !important;
+  border: 1px solid rgba(113,132,122,.18) !important;
+  border-radius: 0 !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.02), 0 10px 24px rgba(0,0,0,.18) !important;
+}
+
+.art-card-image,
+.shop-card .art-image {
+  aspect-ratio: 4 / 5 !important;
+  min-height: 0 !important;
+}
+
+.art-card-image .art-image,
+.shop-card > .art-image {
+  width: 100%;
+  height: 100%;
+}
+
+.art-card-image img,
+.shop-card .art-image img,
+.detail-hero > .art-image img,
+.bag-thumb .art-image img {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  background: #080b09 !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  transform: none !important;
+}
+
+.art-card-image::after {
+  display: none !important;
+}
+
+.art-card:hover img,
+.art-card-image:hover img {
+  transform: none !important;
+}
+
+.image-credit {
+  position: absolute !important;
+  left: 10px;
+  bottom: 9px;
+  z-index: 3;
+  opacity: .85;
+}
+
+.card-arrow {
+  background: #101713 !important;
+  border-color: rgba(113,132,122,.25) !important;
+  color: #91a39a !important;
+}
+
+.card-index {
+  top: 11px !important;
+  left: 11px !important;
+}
+
+.detail-hero > .art-image {
+  min-height: min(74vh, 900px);
+}
+
+.detail-hero > .art-image img {
+  padding: 26px;
+}
+
+.detail-subtitle {
+  color: #91a39a !important;
+}
+
+.back-link,
+.text-button {
+  color: #91a39a !important;
+}
+
+.back-link:hover,
+.text-button:hover {
+  color: #b8c6bf !important;
+}
+
+.text-button::after {
+  background: #53695e !important;
+}
+
+.outline-button,
+.small-button,
+.light-button,
+.dark-button {
+  border-radius: 0 !important;
+}
+
+.outline-button,
+.small-button {
+  color: #b8c6bf !important;
+  border-color: rgba(113,132,122,.25) !important;
+  background: #0a0f0c !important;
+}
+
+.outline-button:hover,
+.small-button:hover {
+  color: #d6ddd8 !important;
+  border-color: rgba(113,132,122,.52) !important;
+  background: #111a16 !important;
+}
+
+.light-button {
+  color: #b8c6bf !important;
+  border-color: rgba(113,132,122,.34) !important;
+  background: #111a16 !important;
+}
+
+.dark-button {
+  color: #07100c !important;
+  border-color: #667c72 !important;
+  background: #667c72 !important;
+  box-shadow: none !important;
+}
+
+.dark-button:hover {
+  background: #799187 !important;
+}
+
+.filter-row button.selected,
+.filter-row button:hover {
+  color: #d9e0db !important;
+  border-color: rgba(113,132,122,.5) !important;
+  background: #111a16 !important;
+}
+
+.sort-select select,
+.contact-form input,
+.contact-form textarea,
+.contact-form select {
+  color: #dfe5e1 !important;
+  background: #090d0b !important;
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: #4e5c55 !important;
+}
+
+.drawer-backdrop {
+  background: rgba(0,0,0,.76) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.bag-drawer {
+  background: #0a0f0c !important;
+  border-left-color: rgba(113,132,122,.2) !important;
+  box-shadow: -18px 0 36px rgba(0,0,0,.38) !important;
+}
+
+.bag-drawer footer {
+  background: #080c0a !important;
+}
+
+.toast {
+  background: #667c72 !important;
+  color: #07100c !important;
+  box-shadow: none !important;
+}
+
+.mobile-menu {
+  background: #080d0a !important;
+  border-top-color: rgba(113,132,122,.18) !important;
+  border-bottom-color: rgba(113,132,122,.18) !important;
+}
+
+.site-header .brand-symbol {
+  border-color: rgba(113,132,122,.52) !important;
+  color: #a6b7ae !important;
+  box-shadow: none !important;
+}
+
+.desktop-nav button::after {
+  background: linear-gradient(90deg, transparent, #667c72, transparent) !important;
+  transition: none !important;
+}
+
+@media (hover: none), (pointer: coarse), (max-width: 980px) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .art-card-image,
+  .shop-card .art-image,
+  .detail-hero > .art-image {
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.02) !important;
+  }
+}
+
+/* Keep below-the-fold sections cheap to paint. */
+.featured-grid,
+.catalogue-grid,
+.collection-list,
+.course-list,
+.learn-faq,
+.process,
+.related {
+  contain: layout paint style;
+}
+
+@media (max-width: 640px) {
+  .featured-grid,
+  .catalogue-grid {
+    contain: none;
+  }
+
+  .art-card-image,
+  .shop-card .art-image {
+    aspect-ratio: 4 / 5 !important;
+  }
+
+  .detail-hero > .art-image {
+    min-height: 62svh;
+  }
+
+  .detail-hero > .art-image img {
+    padding: 16px;
+  }
+}
