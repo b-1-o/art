@@ -146,6 +146,7 @@ function ShowroomHero({ onNavigate }: { onNavigate: (p: string) => void }) {
   const dragging = useRef(false)
   const dragStart = useRef({ x: 0, y: 0 })
   const dragOrigin = useRef({ x: 0, y: 0 })
+  const wheelLock = useRef(0)
   const [activeIndex, setActiveIndex] = useState(0)
 
   const showcase = [0, 3, 6, 10].map((index) => artworks[index])
@@ -255,6 +256,9 @@ function ShowroomHero({ onNavigate }: { onNavigate: (p: string) => void }) {
             if (window.matchMedia('(pointer: coarse)').matches) return
             event.preventDefault()
             if (Math.abs(event.deltaY) < 8) return
+            const now = performance.now()
+            if (now - wheelLock.current < 240) return
+            wheelLock.current = now
             const direction = event.deltaY > 0 ? 1 : -1
             setActiveIndex((currentIndex) => (currentIndex + direction + showcase.length) % showcase.length)
           }}
