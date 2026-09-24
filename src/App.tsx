@@ -110,7 +110,8 @@ function Header({ path, bagCount, menu, setMenu, onBag }: { path: Path; bagCount
         <button className="brand" onClick={() => go('/')} aria-label="AER home"><span className="brand-symbol">A</span><span><b>AER</b><small>ART STUDIO</small></span></button>
         <nav className="desktop-nav">{navItems.map(([href, label]) => <button key={href} className={path === href ? 'active' : ''} onClick={() => go(href)}>{label}</button>)}</nav>
         <div className="header-actions">
-          <button className="bag-trigger" onClick={onBag}><ShoppingBag size={15} /> Inquiry {bagCount > 0 && <i>{bagCount}</i>}</button>
+          <button className="catalog-trigger" onClick={() => go('/works')}>Catalog <ArrowUpRight size={13} /></button>
+          <button className="bag-trigger" onClick={onBag}><ShoppingBag size={15} /> Bag {bagCount > 0 && <i>{bagCount}</i>}</button>
           <button className="menu-trigger" onClick={() => setMenu(!menu)} aria-label="Toggle menu">{menu ? <X size={18} /> : <Menu size={18} />}</button>
         </div>
       </header>
@@ -247,21 +248,31 @@ function ShowroomHero({ onNavigate }: { onNavigate: (p: string) => void }) {
           </div>
         </div>
 
-        <div className="showroom-stage" aria-label="Interactive 3D artwork showroom">
+        <div
+          className="showroom-stage"
+          aria-label="Interactive 3D artwork showroom"
+          onWheel={(event) => {
+            if (window.matchMedia('(pointer: coarse)').matches) return
+            event.preventDefault()
+            if (Math.abs(event.deltaY) < 8) return
+            const direction = event.deltaY > 0 ? 1 : -1
+            setActiveIndex((currentIndex) => (currentIndex + direction + showcase.length) % showcase.length)
+          }}
+        >
           <div className="showroom-floor" />
           <div className="showroom-orbit orbit-a" />
           <div className="showroom-orbit orbit-b" />
 
-          <button type="button" className="art-plane plane-depth showroom-interactive" onClick={() => setActiveIndex((activeIndex + 3) % showcase.length)} aria-label={'Bring ' + depth.title + ' forward'}>
+          <button key={depth.id} type="button" className="art-plane plane-depth showroom-interactive" onClick={() => setActiveIndex((activeIndex + 3) % showcase.length)} aria-label={'Bring ' + depth.title + ' forward'}>
             <img src={depth.image} alt="" loading="lazy" decoding="async" />
           </button>
-          <button type="button" className="art-plane plane-left showroom-interactive" onClick={() => setActiveIndex((activeIndex + 1) % showcase.length)} aria-label={'Bring ' + left.title + ' forward'}>
+          <button key={left.id} type="button" className="art-plane plane-left showroom-interactive" onClick={() => setActiveIndex((activeIndex + 1) % showcase.length)} aria-label={'Bring ' + left.title + ' forward'}>
             <img src={left.image} alt="" loading="lazy" decoding="async" />
           </button>
-          <button type="button" className="art-plane plane-right showroom-interactive" onClick={() => setActiveIndex((activeIndex + 2) % showcase.length)} aria-label={'Bring ' + right.title + ' forward'}>
+          <button key={right.id} type="button" className="art-plane plane-right showroom-interactive" onClick={() => setActiveIndex((activeIndex + 2) % showcase.length)} aria-label={'Bring ' + right.title + ' forward'}>
             <img src={right.image} alt="" loading="lazy" decoding="async" />
           </button>
-          <button type="button" className="art-plane plane-main showroom-interactive" onClick={openActive} aria-label={'Open ' + active.title}>
+          <button key={active.id} type="button" className="art-plane plane-main showroom-interactive" onClick={openActive} aria-label={'Open ' + active.title}>
             <img src={active.image} alt={active.title} fetchPriority="high" decoding="async" />
             <span className="plane-label">AER / {active.number}</span>
             <span className="plane-title">{active.title}<small>{active.subtitle}</small></span>
@@ -270,7 +281,7 @@ function ShowroomHero({ onNavigate }: { onNavigate: (p: string) => void }) {
 
           <div className="showroom-controls">
             <button type="button" onClick={() => setActiveIndex((activeIndex + showcase.length - 1) % showcase.length)} aria-label="Previous artwork"><ArrowLeft size={15} /></button>
-            <span>DRAG / SELECT</span>
+            <span>WHEEL / DRAG</span>
             <button type="button" onClick={() => setActiveIndex((activeIndex + 1) % showcase.length)} aria-label="Next artwork"><ArrowRight size={15} /></button>
           </div>
           <button type="button" className="showroom-reset" onClick={() => {
@@ -280,7 +291,7 @@ function ShowroomHero({ onNavigate }: { onNavigate: (p: string) => void }) {
         </div>
 
         <div className="showroom-bottom">
-          <span>MOVE / DRAG TO ROTATE · CLICK AN ARTWORK TO CENTER IT · CLICK CENTER TO OPEN</span>
+          <span>WHEEL / DRAG TO ROTATE · CLICK AN ARTWORK TO CENTER IT · CLICK CENTER TO OPEN</span>
           <span>12 WORKS / 08 ARTISTS / PRIVATE ARCHIVE</span>
         </div>
       </div>
@@ -340,7 +351,12 @@ function Works({ onNavigate }: { onNavigate: (p: string) => void }) {
     return list.slice().sort((a, b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured)))
   }, [category, sort])
   return <div className="page-wrap"><Intro eyebrow="01 / WORKS" title={<>A living catalogue<br /><em>of the studio.</em></>} body="Paintings selected for material presence, composition, light and enduring visual character." />
-    <section className="section-tight catalogue"><div className="catalogue-toolbar"><div className="filter-row">{(['All', 'Painting'] as const).map((item) => <button className={category === item ? 'selected' : ''} key={item} onClick={() => setCategory(item)}>{item}</button>)}</div><label className="sort-select"><span>Sort</span><select value={sort} onChange={(e) => setSort(e.target.value as typeof sort)}><option>Featured</option><option>Newest</option><option>Price</option></select><ChevronDown size={14} /></label></div><div className="catalogue-grid">{items.map((a, i) => <Card key={a.id} artwork={a} compact={i % 3 === 1} />)}</div><div className="collection-list"><div className="eyebrow-row"><span>COLLECTIONS</span><span>03 / 03</span></div>{collections.map((c, i) => <div className="collection-row" key={c.title}><span>0{i + 1}</span><h3>{c.title}</h3><p>{c.description}</p><b>{c.count}</b><ArrowUpRight size={18} /></div>)}</div></section>
+    <section className="section-tight catalogue">
+      <div className="catalogue-headline">
+        <div><span>ARCHIVE / 12 WORKS</span><strong>CATALOGUE</strong></div>
+        <p>Original public-domain references presented as a fictional museum-edition commerce interface.</p>
+      </div>
+      <div className="catalogue-toolbar"><div className="filter-row">{(['All', 'Painting'] as const).map((item) => <button className={category === item ? 'selected' : ''} key={item} onClick={() => setCategory(item)}>{item}</button>)}</div><label className="sort-select"><span>Sort</span><select value={sort} onChange={(e) => setSort(e.target.value as typeof sort)}><option>Featured</option><option>Newest</option><option>Price</option></select><ChevronDown size={14} /></label></div><div className="catalogue-grid">{items.map((a, i) => <Card key={a.id} artwork={a} compact={i % 3 === 1} />)}</div><div className="collection-list"><div className="eyebrow-row"><span>COLLECTIONS</span><span>03 / 03</span></div>{collections.map((c, i) => <div className="collection-row" key={c.title}><span>0{i + 1}</span><h3>{c.title}</h3><p>{c.description}</p><b>{c.count}</b><ArrowUpRight size={18} /></div>)}</div></section>
   </div>
 }
 
@@ -404,7 +420,7 @@ function Contact({ onNavigate }: { onNavigate: (p: string) => void }) {
 function BagDrawer({ bag, onClose, onRemove, onCheckout }: { bag: string[]; onClose: () => void; onRemove: (id: string) => void; onCheckout: () => void }) {
   const items = bag.map((id, index) => { const item = artworks.find((a) => a.id === id); return item ? { item, key: item.id + '-' + index } : null }).filter(Boolean) as { item: Artwork; key: string }[]
   const total = items.reduce((sum, entry) => sum + entry.item.price, 0)
-  return <div className="drawer-backdrop" onClick={onClose}><aside className="bag-drawer" onClick={(e) => e.stopPropagation()}><header><div><p className="eyebrow">INQUIRY BAG</p><h2>{items.length} {items.length === 1 ? 'work' : 'works'}</h2></div><button onClick={onClose}><X size={19} /></button></header><div className="bag-items">{items.length === 0 && <div className="empty-cart"><ShoppingBag size={22} /><p>Your bag is empty.</p><span>Add a work from the catalogue to start an inquiry.</span></div>}{items.map((entry) => <div className="bag-item" key={entry.key}><div className="bag-thumb"><Image artwork={entry.item} /></div><div><p>{entry.item.category}</p><h3>{entry.item.title}</h3><strong>{String.fromCharCode(36)}{entry.item.price.toLocaleString()}</strong></div><button onClick={() => onRemove(entry.item.id)}><X size={14} /></button></div>)}</div><footer><div><span>Estimated value</span><strong>{items.length ? '$' + total.toLocaleString() : '$0'}</strong></div><button className="dark-button full-width" disabled={!items.length} onClick={onCheckout}>Continue to inquiry <ArrowRight size={15} /></button><small>No payment is taken here. The studio confirms availability, shipping and framing first.</small></footer></aside></div>
+  return <div className="drawer-backdrop" onClick={onClose}><aside className="bag-drawer" onClick={(e) => e.stopPropagation()}><header><div><p className="eyebrow">SELECTED WORKS / BAG</p><h2>{items.length} {items.length === 1 ? 'work' : 'works'}</h2></div><button onClick={onClose}><X size={19} /></button></header><div className="bag-items">{items.length === 0 && <div className="empty-cart"><ShoppingBag size={22} /><p>Your bag is empty.</p><span>Add a work from the catalogue to start an inquiry.</span></div>}{items.map((entry) => <div className="bag-item" key={entry.key}><div className="bag-thumb"><Image artwork={entry.item} /></div><div><p>{entry.item.category}</p><h3>{entry.item.title}</h3><strong>{String.fromCharCode(36)}{entry.item.price.toLocaleString()}</strong></div><button onClick={() => onRemove(entry.item.id)}><X size={14} /></button></div>)}</div><footer><div><span>Estimated value</span><strong>{items.length ? '$' + total.toLocaleString() : '$0'}</strong></div><button className="dark-button full-width" disabled={!items.length} onClick={onCheckout}>Continue to inquiry <ArrowRight size={15} /></button><small>No payment is taken here. The studio confirms availability, shipping and framing first.</small></footer></aside></div>
 }
 
 function NotFound({ onNavigate }: { onNavigate: (p: string) => void }) { return <div className="page-wrap not-found"><span>404</span><h1>This room<br /><em>doesn’t exist.</em></h1><button className="dark-button" onClick={() => onNavigate('/')}>Return to index <ArrowLeft size={15} /></button></div> }
