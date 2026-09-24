@@ -1,5 +1,5 @@
 
-import { type FormEvent, type ReactNode, useEffect, useMemo, useState } from 'react'
+import { type FormEvent, type ReactNode, useEffect, useMemo, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Check, ChevronDown, ExternalLink, Menu, Minus, Plus, ShoppingBag, X } from 'lucide-react'
 import { artworks, collections, courses, navItems, studioFacts, type Artwork, type ArtworkCategory } from './data'
@@ -137,20 +137,136 @@ function Card({ artwork, compact = false }: { artwork: Artwork; compact?: boolea
   </article>
 }
 
-function Home({ onNavigate }: { onNavigate: (p: string) => void }) {
-  return <>
-    <section className="hero"><Image artwork={artworks[7]} priority /><div className="hero-scrim" /><div className="hero-grid"><div className="hero-kicker">AER / PRIVATE ART SALON</div><div className="hero-title"><p>THE IMAGE LIVES<br /><em>BEYOND THE MOMENT.</em></p><h1>Seen slowly.<br />Held <em>closely.</em></h1></div><div className="hero-note"><span>01—06</span><p>A private digital salon for paintings chosen for light, material, composition and lasting visual presence.</p></div><button className="hero-scroll" onClick={() => onNavigate('/works')}>ENTER THE WORK <ArrowDown /></button></div><div className="hero-bottom"><span>PRIVATE SALON / 2026</span><span>SCROLL TO EXPLORE <i /></span></div></section>
+function ShowroomHero({ onNavigate }: { onNavigate: (p: string) => void }) {
+  const sceneRef = useRef<HTMLDivElement>(null)
+  const frameRef = useRef<number | null>(null)
+  const target = useRef({ x: 0, y: 0 })
+  const current = useRef({ x: 0, y: 0 })
 
-    <section className="section manifesto"><div className="eyebrow-row"><span>THE STUDIO NOTE</span><span>01 / 06</span></div><div className="manifesto-grid"><h2>Form can be silent<br /><em>and still command the room.</em></h2><div><p>Geometric studies, colour fields and symbolic forms from the early language of abstraction.</p><button className="text-button" onClick={() => onNavigate('/studio')}>Inside the studio <ArrowUpRight size={15} /></button></div></div></section>
+  useEffect(() => {
+    const el = sceneRef.current
+    if (!el || window.matchMedia('(pointer: coarse)').matches) return
 
-    <section className="section featured"><div className="section-heading"><div><p className="eyebrow">SELECTED ABSTRACTIONS</p><h2>Selected <em>abstractions.</em></h2></div><button className="outline-button" onClick={() => onNavigate('/works')}>View catalogue <ArrowRight size={15} /></button></div><div className="featured-grid">{artworks.filter((a) => a.featured).slice(0, 6).map((a) => <Card key={a.id} artwork={a} />)}</div></section>
+    const update = () => {
+      frameRef.current = null
+      current.current.x += (target.current.x - current.current.x) * 0.12
+      current.current.y += (target.current.y - current.current.y) * 0.12
+      el.style.setProperty('--tilt-x', current.current.x.toFixed(2) + 'deg')
+      el.style.setProperty('--tilt-y', current.current.y.toFixed(2) + 'deg')
 
-    <section className="collection-band"><div className="band-index">02 / 03</div><div><p className="eyebrow">PRIVATE COLLECTION</p><h2>BLACK<br /><em>GALLERY.</em></h2></div><div><p>A curated room of paintings, reduced to light, surface, scale and silence — presented without visual noise.</p><button className="light-button" onClick={() => onNavigate('/works')}>Enter collection <ArrowUpRight size={15} /></button></div></section>
+      if (Math.abs(target.current.x - current.current.x) > 0.02 || Math.abs(target.current.y - current.current.y) > 0.02) {
+        frameRef.current = requestAnimationFrame(update)
+      }
+    }
 
-    <section className="section education-cta"><div><p className="eyebrow">ART JOURNAL</p><h2>Look closer.<br /><em>Read the image.</em></h2><p>Notes on artists, materials, composition and the visual language behind the collection.</p><button className="text-button dark" onClick={() => onNavigate('/learn')}>Explore learning <ArrowUpRight size={15} /></button></div><div className="education-orbit"><span>PROCESS</span><span>COLOR</span><span>FORM</span><span>ATTENTION</span></div></section>
-  </>
+    const onMove = (event: PointerEvent) => {
+      const rect = el.getBoundingClientRect()
+      const x = (event.clientX - rect.left) / rect.width - 0.5
+      const y = (event.clientY - rect.top) / rect.height - 0.5
+      target.current = { x: y * -7, y: x * 9 }
+      if (frameRef.current === null) frameRef.current = requestAnimationFrame(update)
+    }
+
+    const reset = () => {
+      target.current = { x: 0, y: 0 }
+      if (frameRef.current === null) frameRef.current = requestAnimationFrame(update)
+    }
+
+    el.addEventListener('pointermove', onMove)
+    el.addEventListener('pointerleave', reset)
+    return () => {
+      el.removeEventListener('pointermove', onMove)
+      el.removeEventListener('pointerleave', reset)
+      if (frameRef.current !== null) cancelAnimationFrame(frameRef.current)
+    }
+  }, [])
+
+  const main = artworks[0]
+  const sideA = artworks[3]
+  const sideB = artworks[6]
+  const depth = artworks[10]
+
+  return (
+    <section className="showroom-hero">
+      <div ref={sceneRef} className="showroom-scene">
+        <div className="showroom-copy">
+          <p className="hero-kicker">AER / PRIVATE DIGITAL SHOWROOM</p>
+          <div className="showroom-index">01 <span>/ 12</span></div>
+          <h1>Art,<br /><em>with depth.</em></h1>
+          <p className="showroom-description">A curated archive reimagined as an interactive luxury space — built to feel closer to a product experience than a static gallery.</p>
+          <div className="showroom-actions">
+            <button className="dark-button" onClick={() => onNavigate('/shop')}>Enter the shop <ArrowRight size={15} /></button>
+            <button className="showroom-link" onClick={() => onNavigate('/works')}>Browse archive <ArrowUpRight size={15} /></button>
+          </div>
+        </div>
+
+        <div className="showroom-stage" aria-hidden="true">
+          <div className="showroom-floor" />
+          <div className="showroom-orbit orbit-a" />
+          <div className="showroom-orbit orbit-b" />
+          <div className="art-plane plane-depth"><img src={depth.image} alt="" loading="lazy" decoding="async" /></div>
+          <div className="art-plane plane-left"><img src={sideA.image} alt="" loading="lazy" decoding="async" /></div>
+          <div className="art-plane plane-right"><img src={sideB.image} alt="" loading="lazy" decoding="async" /></div>
+          <div className="art-plane plane-main">
+            <img src={main.image} alt={main.title} fetchPriority="high" decoding="async" />
+            <span className="plane-label">AER / 001</span>
+            <span className="plane-title">{main.title}<small>{main.subtitle}</small></span>
+          </div>
+          <div className="showroom-reflection" />
+        </div>
+
+        <div className="showroom-bottom">
+          <span>MOVE YOUR CURSOR TO EXPLORE DEPTH</span>
+          <span>12 WORKS / 08 ARTISTS / PRIVATE ARCHIVE</span>
+        </div>
+      </div>
+    </section>
+  )
 }
 
+function Home({ onNavigate }: { onNavigate: (p: string) => void }) {
+  return <>
+    <ShowroomHero onNavigate={onNavigate} />
+
+    <section className="section manifesto">
+      <div className="eyebrow-row"><span>THE CONCEPT</span><span>01 / 04</span></div>
+      <div className="manifesto-grid">
+        <h2>Not a catalogue.<br /><em>A digital object.</em></h2>
+        <div>
+          <p>The interface treats every artwork like a collectible product: controlled perspective, physical scale, material contrast and deliberate motion.</p>
+          <button className="text-button" onClick={() => onNavigate('/studio')}>See the studio system <ArrowUpRight size={15} /></button>
+        </div>
+      </div>
+    </section>
+
+    <section className="section featured showroom-featured">
+      <div className="section-heading">
+        <div><p className="eyebrow">SELECTED ABSTRACTIONS</p><h2>Objects for the<br /><em>digital room.</em></h2></div>
+        <button className="outline-button" onClick={() => onNavigate('/works')}>View archive <ArrowRight size={15} /></button>
+      </div>
+      <div className="featured-grid">{artworks.slice(0, 6).map((a, i) => <Card key={a.id} artwork={a} compact={i % 2 === 1} />)}</div>
+    </section>
+
+    <section className="collection-band showroom-band">
+      <div className="band-index">02 / 04</div>
+      <div><p className="eyebrow">PRIVATE EDITIONS</p><h2>THE<br /><em>VAULT.</em></h2></div>
+      <div>
+        <p>Archival prints, museum-grade studies and digital presentation experiments — built as a complete commerce experience.</p>
+        <button className="light-button" onClick={() => onNavigate('/shop')}>Open the vault <ArrowUpRight size={15} /></button>
+      </div>
+    </section>
+
+    <section className="section education-cta">
+      <div>
+        <p className="eyebrow">ENGINEERING NOTE</p>
+        <h2>Every layer<br /><em>has a reason.</em></h2>
+        <p>Responsive 3D transforms, low-cost pointer tracking, lazy image loading and CSS-driven motion keep the experience expressive without turning the page into a GPU benchmark.</p>
+        <button className="text-button dark" onClick={() => onNavigate('/studio')}>Read the system <ArrowUpRight size={15} /></button>
+      </div>
+      <div className="education-orbit showroom-orbit-static"><span>DEPTH</span><span>MOTION</span><span>TYPE</span><span>RENDER</span></div>
+    </section>
+  </>
+}
 function Works({ onNavigate }: { onNavigate: (p: string) => void }) {
   const [category, setCategory] = useState<'All' | ArtworkCategory>('All')
   const [sort, setSort] = useState<'Featured' | 'Newest' | 'Price'>('Featured')
@@ -170,11 +286,43 @@ function WorkDetail({ artwork, onBack, add }: { artwork: Artwork; onBack: () => 
   return <div className="page-wrap detail-page"><button className="back-link" onClick={onBack}><ArrowLeft size={15} /> Back to works</button><section className="detail-hero"><Image artwork={artwork} priority /><div className="detail-sidebar"><p className="eyebrow">{artwork.number} / {artwork.category}</p><h1>{artwork.title}</h1><p className="detail-subtitle">{artwork.subtitle}</p><div className="detail-divider" /><dl className="specs"><div><dt>Year</dt><dd>{artwork.year}</dd></div><div><dt>Medium</dt><dd>{artwork.medium}</dd></div><div><dt>Size</dt><dd>{artwork.dimensions}</dd></div><div><dt>Status</dt><dd>{artwork.status}</dd></div></dl><p className="detail-description">{artwork.description}</p><div className="detail-purchase"><div><small>Collection record</small><strong>PUBLIC DOMAIN / ARCHIVE</strong></div>{artwork.status !== 'Sold' && <button className="dark-button" onClick={() => go('/contact')}>Private viewing <ArrowUpRight size={15} /></button>}</div></div></section><section className="section-tight detail-notes"><div><p className="eyebrow">THE NOTE</p><h2>“The piece should feel like a room you remember without knowing why.”</h2></div><div><p>Works are shipped with a signed studio certificate and catalogue entry. Framing and international shipping are quoted separately.</p><button className="text-button" onClick={() => go('/contact')}>Ask about this work <ArrowUpRight size={15} /></button></div></section>{related.length > 0 && <section className="section related"><div className="section-heading"><div><p className="eyebrow">CONTINUE LOOKING</p><h2>More from <em>this series.</em></h2></div></div><div className="featured-grid">{related.map((a) => <Card key={a.id} artwork={a} compact />)}</div></section>}</div>
 }
 
-function Shop({ onNavigate, add }: { onNavigate: (p: string) => void; add: (a: Artwork) => void }) {
-  const items = artworks.filter((a) => a.status !== 'Sold')
-  return <div className="page-wrap"><Intro eyebrow="02 / ARCHIVE" title={<>Originals.<br /><em>Limited editions.</em></>} body="A small release of studio works. Acquisition begins with an inquiry so every piece can be packed, framed and shipped correctly." /><section className="section-tight shop-grid">{items.map((a) => <article className="shop-card" key={a.id}><Image artwork={a} /><div className="shop-card-body"><div><p>{a.category} / {a.year}</p><h3>{a.title}</h3><span>{a.medium}</span></div><div className="shop-card-bottom"><strong>{a.status === 'Edition' ? 'From $' : '$'}{a.price.toLocaleString()}</strong><div><button className="small-button" onClick={() => onNavigate('/works/' + a.id)}>Details</button><button className="dark-button small-dark" onClick={() => add(a)}>Add <Plus size={14} /></button></div></div></div></article>)}</section><section className="section shipping-note"><div><p className="eyebrow">STUDIO COMMERCE</p><h2>Human-first,<br /><em>not checkout-first.</em></h2></div><div className="shipping-grid">{[['01', 'Inquiry', 'Tell the studio which work you’re interested in and where it needs to go.'], ['02', 'Confirmation', 'You’ll receive availability, shipping and framing details before any payment.'], ['03', 'Delivery', 'Every original is packed individually and leaves with its studio documentation.']].map(([n, t, d]) => <div key={n}><span>{n}</span><h3>{t}</h3><p>{d}</p></div>)}</div></section></div>
+function archivePrice(index: number) {
+  return 95 + index * 35
 }
 
+function Shop({ onNavigate, add }: { onNavigate: (p: string) => void; add: (a: Artwork) => void }) {
+  const items = artworks.slice(0, 9)
+  return <div className="page-wrap shop-page">
+    <Intro eyebrow="02 / VAULT" title={<>Editions.<br /><em>Built to be touched.</em></>} body="A fictional luxury archive shop for this portfolio experience — each work is presented as a numbered museum edition rather than a claimed original." />
+    <section className="section-tight vault-grid">
+      {items.map((a, i) => <article className="vault-card" key={a.id} style={{ '--vault-index': i } as CSSProperties}>
+        <button className="vault-art" onClick={() => onNavigate('/works/' + a.id)}>
+          <div className="vault-ring" />
+          <img src={a.image} alt={a.title} loading="lazy" decoding="async" />
+          <span className="vault-number">0{i + 1}</span>
+          <span className="vault-open"><ArrowUpRight size={15} /></span>
+        </button>
+        <div className="vault-info">
+          <div><p>{a.subtitle}</p><h3>{a.title}</h3><span>{a.year} / {a.medium}</span></div>
+          <div className="vault-buy">
+            <strong>$${archivePrice(i)}</strong>
+            <button className="dark-button small-dark" onClick={() => add(a)}>Add edition <Plus size={13} /></button>
+          </div>
+        </div>
+      </article>)}
+    </section>
+    <section className="section shipping-note">
+      <div><p className="eyebrow">COMMERCE SYSTEM</p><h2>Physical feel.<br /><em>Digital speed.</em></h2></div>
+      <div className="shipping-grid">
+        {[
+          ['01', 'Select', 'Inspect the artwork, move through depth and open the full record.'],
+          ['02', 'Reserve', 'Add an edition to the inquiry tray without interrupting the showroom.'],
+          ['03', 'Confirm', 'Review the selected works and prepare a private request.'],
+        ].map(([n, t, d]) => <div key={n}><span>{n}</span><h3>{t}</h3><p>{d}</p></div>)}
+      </div>
+    </section>
+  </div>
+}
 function Learn({ onNavigate }: { onNavigate: (p: string) => void }) {
   return <div className="page-wrap"><Intro eyebrow="03 / LEARN" title={<>Practice before<br /><em>perfection.</em></>} body="Education is built around observation, process and repetition — not a single correct style." /><section className="section-tight learn-intro"><div><p className="eyebrow">THE METHOD</p><h2>Look longer.<br />Edit less.<br /><em>Make more.</em></h2></div><div className="learn-method-list">{['References become vocabulary.', 'Color becomes structure.', 'Process becomes evidence.', 'Critique becomes direction.'].map((item, i) => <div key={item}><span>0{i + 1}</span><p>{item}</p><ArrowUpRight size={15} /></div>)}</div></section><section className="section course-list"><div className="section-heading"><div><p className="eyebrow">COURSES &amp; MENTORSHIP</p><h2>Choose your <em>scale.</em></h2></div></div>{courses.map((course) => <article className="course-row" key={course.id}><div className="course-index">{course.id.slice(0, 2).toUpperCase()}</div><div className="course-main"><p>{course.eyebrow} / {course.duration}</p><h3>{course.title}</h3><span>{course.description}</span></div><strong>{String.fromCharCode(36)}{course.price}</strong><button className="outline-button" onClick={() => onNavigate('/contact')}>Ask about it <ArrowUpRight size={15} /></button></article>)}</section><section className="section learn-faq"><div className="eyebrow-row"><span>COMMON QUESTIONS</span><span>04 / 04</span></div><Faq q="Do I need formal art training?" a="No. The workshops are built around observation, practice and a willingness to make work. Previous study can help, but it is not required." /><Faq q="Are the sessions online?" a="Yes. The current programme is remote-first and uses image reviews, reference boards and live studio conversation." /><Faq q="Can I bring an existing project?" a="Absolutely. The one-to-one session is designed around a specific body of work, portfolio question or creative block." /></section></div>
 }
