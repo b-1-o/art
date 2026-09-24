@@ -1551,3 +1551,177 @@ body,
     scroll-behavior: auto;
   }
 }
+
+
+/* FINAL PERFORMANCE + SECONDARY COLOR CONTRACT */
+:root {
+  --secondary-text: #607168;
+  --secondary-text-strong: #718279;
+  --secondary-border: rgba(96, 113, 104, .34);
+  --secondary-fill: rgba(39, 52, 46, .28);
+  --gold: #c6a86b;
+  --ink: #f1eee7;
+}
+
+.page-static {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Secondary text is intentionally green-gray. Gold is reserved for accents only. */
+.intro-body,
+.hero-note,
+.art-card-meta span,
+.shop-card-body > div > p,
+.shop-card-body span,
+.shipping-grid p,
+.learn-method-list p,
+.process-row p,
+.course-main span,
+.studio-copy > p:not(.eyebrow),
+.studio-credit p,
+.contact-detail p,
+.contact-detail a,
+.detail-description,
+.collection-band p,
+.education-cta > div:first-child > p:not(.eyebrow),
+.back-link,
+.faq-answer p,
+.form-success,
+.empty-cart span,
+.bag-item p,
+.sort-select span,
+.filter-row button,
+.course-main > p,
+.specs dt,
+.detail-purchase small,
+.footer-bottom,
+.footer-links span {
+  color: var(--secondary-text) !important;
+}
+
+.art-card-meta strong,
+.shop-card-bottom strong,
+.detail-purchase strong {
+  color: var(--gold) !important;
+}
+
+.eyebrow,
+.eyebrow-row,
+.page-intro > p,
+.hero-kicker,
+.image-credit,
+.collection-row > span,
+.collection-row > b,
+.course-index,
+.facts-grid span,
+.contact-detail span {
+  color: var(--secondary-text-strong) !important;
+}
+
+.section-heading h2 em,
+.manifesto h2 em,
+.education-cta h2 em,
+.learn-statement h2 em,
+.course-list h2 em,
+.shipping-note h2 em,
+.process h2 em,
+.studio-credit h2 em,
+.detail-sidebar h1 em,
+.detail-notes h2 em,
+.not-found h1 em,
+.page-intro h1 em,
+.hero h1 em,
+.hero-title > p em {
+  color: #9dafA4 !important;
+}
+
+/* No per-card reveal work, no layout animation, no GPU-heavy hover filters. */
+.art-card,
+.art-card-image,
+.art-card-image img,
+.shop-card,
+.shop-card .art-image img,
+.detail-hero > .art-image img,
+.faq-answer,
+.toast,
+.mobile-menu,
+.bag-drawer,
+.drawer-backdrop {
+  animation: none !important;
+}
+
+.art-card-image::after {
+  opacity: 0 !important;
+}
+
+.art-card:hover img {
+  transform: none !important;
+}
+
+.art-card-image img,
+.shop-card .art-image img,
+.detail-hero > .art-image img {
+  transition: none !important;
+}
+
+.drawer-backdrop {
+  background: rgba(0,0,0,.72) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.bag-drawer {
+  box-shadow: -18px 0 42px rgba(0,0,0,.34) !important;
+}
+
+.toast {
+  box-shadow: 0 12px 28px rgba(0,0,0,.3) !important;
+}
+
+.mobile-menu {
+  transition: none !important;
+}
+
+/* Keep page rendering predictable on low-power integrated graphics. */
+.section,
+.section-tight,
+.collection-band,
+.education-cta,
+.studio-feature,
+.shipping-note,
+.learn-intro,
+.process,
+.studio-credit,
+.related,
+.contact-grid {
+  content-visibility: auto;
+  contain-intrinsic-size: 640px;
+}
+
+@media (max-width: 640px) {
+  .hero {
+    contain: paint;
+  }
+
+  .hero > .art-image img {
+    content-visibility: auto;
+  }
+
+  .section,
+  .section-tight {
+    content-visibility: visible;
+  }
+
+  .art-card,
+  .shop-card {
+    content-visibility: auto;
+    contain-intrinsic-size: 420px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-static {
+    animation: none !important;
+  }
+}
