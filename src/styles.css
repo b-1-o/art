@@ -651,3 +651,301 @@ img { max-width: 100%; }
   :root { --line: rgba(29,27,24,.28); --muted: #5d574f; }
   .hero-scrim { background: linear-gradient(180deg,rgba(0,0,0,.66),rgba(0,0,0,.2),rgba(0,0,0,.7)); }
 }
+
+
+/* Luxury botanical atmosphere */
+.section,
+.collection-band,
+.education-cta,
+.studio-feature,
+.shipping-note,
+.learn-intro,
+.process,
+.contact-grid {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.section::before,
+.section::after,
+.collection-band::before,
+.education-cta::before,
+.studio-feature::before {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  z-index: -2;
+}
+
+.section::before,
+.education-cta::before,
+.studio-feature::before {
+  width: min(55vw, 720px);
+  height: min(55vw, 720px);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 32%, rgba(203, 173, 138, .18), transparent 34%),
+    radial-gradient(circle at 65% 58%, rgba(104, 126, 93, .15), transparent 48%);
+  filter: blur(36px);
+  opacity: .7;
+  transform: translate3d(-18%, -12%, 0);
+}
+
+.section::after {
+  inset: auto 0 0;
+  height: 45%;
+  background: linear-gradient(180deg, transparent, rgba(103, 91, 71, .035));
+}
+
+.manifesto {
+  background:
+    radial-gradient(circle at 92% 8%, rgba(162, 122, 126, .12), transparent 24%),
+    radial-gradient(circle at 4% 84%, rgba(87, 113, 89, .1), transparent 26%),
+    var(--paper);
+}
+
+.featured {
+  background:
+    radial-gradient(circle at 74% 28%, rgba(176, 147, 103, .08), transparent 23%),
+    linear-gradient(180deg, var(--paper), #ece6db 85%, #e6dfd3);
+}
+
+.featured-grid {
+  position: relative;
+  z-index: 2;
+}
+
+.art-card {
+  position: relative;
+}
+
+.art-card::before {
+  content: "";
+  position: absolute;
+  inset: 8% 8% auto;
+  height: 54%;
+  border-radius: 50%;
+  background: var(--card-glow, rgba(165, 126, 91, .15));
+  filter: blur(42px);
+  opacity: .4;
+  z-index: -1;
+  transition: opacity .55s ease, transform .7s var(--ease);
+}
+.art-card:nth-child(2n) { --card-glow: rgba(111, 129, 154, .16); }
+.art-card:nth-child(3n) { --card-glow: rgba(137, 99, 103, .15); }
+.art-card:nth-child(4n) { --card-glow: rgba(94, 116, 83, .15); }
+.art-card:hover::before { opacity: .74; transform: scale(1.12) translateY(-3%); }
+
+.collection-band {
+  min-height: 78vh;
+  background:
+    radial-gradient(circle at 20% 32%, rgba(144, 170, 132, .18), transparent 24%),
+    radial-gradient(circle at 78% 74%, rgba(164, 110, 126, .17), transparent 26%),
+    linear-gradient(120deg, #171713 0%, #26231d 44%, #1c221b 100%);
+  box-shadow: inset 0 1px rgba(255,255,255,.08), inset 0 -1px rgba(0,0,0,.24);
+}
+.collection-band::before {
+  inset: -20% -8%;
+  background:
+    radial-gradient(ellipse at 24% 38%, rgba(159, 196, 158, .16), transparent 22%),
+    radial-gradient(ellipse at 71% 64%, rgba(192, 119, 140, .12), transparent 24%),
+    linear-gradient(118deg, transparent 28%, rgba(255,255,255,.035) 45%, transparent 60%);
+  filter: blur(12px);
+  opacity: .8;
+  animation: quiet-breath 13s ease-in-out infinite alternate;
+}
+@keyframes quiet-breath {
+  from { transform: translate3d(-1.5%, 0, 0) scale(1); opacity: .56; }
+  to { transform: translate3d(1.5%, -1.5%, 0) scale(1.035); opacity: .86; }
+}
+.collection-band > * { position: relative; z-index: 3; }
+
+.hero-botanical {
+  position: absolute;
+  z-index: 3;
+  width: min(47vw, 640px);
+  height: min(47vw, 640px);
+  right: -8%;
+  bottom: -18%;
+  color: rgba(211, 222, 194, .58);
+  opacity: .7;
+  transform: rotate(7deg);
+  filter: drop-shadow(0 30px 55px rgba(0,0,0,.28));
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+.botanical-veil svg { width: 100%; height: 100%; display: block; }
+.botanical-rose { color: rgba(213, 156, 165, .52); }
+.botanical-gold { color: rgba(200, 167, 116, .42); }
+.section-botanical {
+  position: absolute;
+  z-index: 0;
+  width: min(34vw, 480px);
+  height: min(34vw, 480px);
+  pointer-events: none;
+  opacity: .26;
+  filter: blur(.2px) drop-shadow(0 20px 40px rgba(55,44,32,.08));
+}
+.section-botanical.left { left: -11%; top: 18%; transform: scaleX(-1) rotate(-12deg); }
+.band-botanical {
+  position: absolute;
+  width: min(42vw, 620px);
+  height: min(42vw, 620px);
+  right: -12%;
+  top: -18%;
+  z-index: 1;
+  opacity: .24;
+  color: rgba(202, 218, 188, .62);
+  transform: rotate(18deg) scale(.95);
+  pointer-events: none;
+}
+.education-botanical {
+  position: absolute;
+  width: min(40vw, 520px);
+  height: min(40vw, 520px);
+  left: -13%;
+  bottom: -24%;
+  opacity: .16;
+  color: #8b6b64;
+  transform: rotate(-14deg);
+  z-index: 0;
+  pointer-events: none;
+}
+.studio-botanical {
+  position: absolute;
+  width: min(32vw, 450px);
+  height: min(32vw, 450px);
+  right: -13%;
+  top: -15%;
+  opacity: .13;
+  color: #6a8164;
+  transform: rotate(14deg);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-light {
+  position: absolute;
+  z-index: 2;
+  border-radius: 50%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+.hero-light.one {
+  width: min(46vw, 720px);
+  height: min(46vw, 720px);
+  left: -15%;
+  top: 12%;
+  background: radial-gradient(circle, rgba(248, 232, 201, .18), transparent 68%);
+  filter: blur(12px);
+  animation: drift-light-a 16s ease-in-out infinite alternate;
+}
+.hero-light.two {
+  width: min(38vw, 580px);
+  height: min(38vw, 580px);
+  right: 6%;
+  top: 4%;
+  background: radial-gradient(circle, rgba(190, 213, 178, .12), transparent 65%);
+  filter: blur(18px);
+  animation: drift-light-b 19s ease-in-out infinite alternate-reverse;
+}
+@keyframes drift-light-a {
+  from { transform: translate3d(0, 0, 0) scale(.96); opacity: .62; }
+  to { transform: translate3d(7vw, 3vh, 0) scale(1.08); opacity: .94; }
+}
+@keyframes drift-light-b {
+  from { transform: translate3d(0, 0, 0) scale(1); opacity: .35; }
+  to { transform: translate3d(-5vw, 5vh, 0) scale(1.14); opacity: .72; }
+}
+
+.page-intro {
+  position: relative;
+  background:
+    radial-gradient(circle at 90% 10%, rgba(154, 116, 123, .09), transparent 23%),
+    radial-gradient(circle at 8% 88%, rgba(95, 121, 88, .08), transparent 27%),
+    linear-gradient(180deg, #f5f1e9, #f0ebe1);
+  overflow: hidden;
+}
+.page-intro::after {
+  content: "";
+  position: absolute;
+  width: 42vw;
+  height: 22vw;
+  right: -13%;
+  bottom: -42%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(180, 135, 108, .12), transparent 68%);
+  filter: blur(38px);
+}
+
+.page-intro h1,
+.manifesto h2,
+.section-heading h2,
+.collection-band h2,
+.education-cta h2,
+.learn-statement h2,
+.course-list h2,
+.shipping-note h2,
+.process h2,
+.studio-credit h2,
+.detail-sidebar h1,
+.not-found h1 {
+  text-wrap: balance;
+}
+
+.detail-page {
+  background:
+    radial-gradient(circle at 7% 18%, rgba(89, 113, 86, .065), transparent 24%),
+    radial-gradient(circle at 94% 58%, rgba(163, 103, 123, .07), transparent 26%);
+}
+
+.shop-grid {
+  position: relative;
+}
+.shop-grid::before {
+  content: "";
+  position: absolute;
+  width: 55vw;
+  height: 35vw;
+  top: 4%;
+  right: -20%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(119, 143, 107, .1), transparent 68%);
+  filter: blur(34px);
+  pointer-events: none;
+}
+.shop-card {
+  position: relative;
+  overflow: hidden;
+}
+.shop-card::after {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  right: -70px;
+  bottom: -70px;
+  background: radial-gradient(circle, rgba(174, 130, 128, .1), transparent 70%);
+  filter: blur(10px);
+  pointer-events: none;
+}
+
+@media (max-width: 640px) {
+  .hero-botanical { width: 92vw; height: 92vw; right: -28%; bottom: -11%; opacity: .5; }
+  .section-botanical { width: 74vw; height: 74vw; left: -31%; top: 17%; opacity: .17; }
+  .band-botanical { width: 90vw; height: 90vw; right: -33%; top: -9%; opacity: .17; }
+  .education-botanical { width: 88vw; height: 88vw; left: -32%; bottom: -18%; opacity: .11; }
+  .studio-botanical { width: 84vw; height: 84vw; right: -34%; top: -5%; opacity: .09; }
+  .hero-light.one { width: 80vw; height: 80vw; left: -28%; top: 20%; }
+  .hero-light.two { width: 70vw; height: 70vw; right: -8%; top: 4%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .collection-band::before,
+  .hero-light.one,
+  .hero-light.two {
+    animation: none;
+  }
+}
