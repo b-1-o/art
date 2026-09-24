@@ -1303,3 +1303,251 @@ body { background: #080807; }
 @media (prefers-reduced-motion: reduce) {
   .noise { display: none; }
 }
+
+
+/* PERFORMANCE + DARK GREEN LUXURY PASS */
+:root {
+  --secondary: #27342e;
+  --secondary-light: #35463d;
+  --secondary-line: rgba(83, 105, 94, .34);
+  --secondary-soft: rgba(39, 52, 46, .22);
+  --accent: #c6a86b;
+  --gold-line: rgba(198, 168, 107, .42);
+}
+
+html {
+  background: #070807;
+  scroll-behavior: auto;
+}
+
+body,
+.app,
+.page {
+  background: #070807;
+}
+
+.noise {
+  display: none !important;
+}
+
+.botanical-veil,
+.hero-light,
+.shop-grid::before,
+.shop-card::after {
+  display: none !important;
+}
+
+/* Remove GPU-heavy filters/backdrop effects from the main visual path. */
+.hero-scroll,
+.drawer-backdrop {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.hero-scroll {
+  background: rgba(18, 25, 22, .74);
+}
+
+.hero > .art-image img,
+.art-card-image img,
+.shop-card .art-image img,
+.detail-hero > .art-image img,
+.bag-thumb .art-image img {
+  filter: none !important;
+  -webkit-filter: none !important;
+}
+
+.hero > .art-image img {
+  transform: none;
+  opacity: .56;
+}
+
+.hero-scrim {
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.82), rgba(0,0,0,.2) 30%, rgba(0,0,0,.46) 60%, rgba(0,0,0,.94)),
+    linear-gradient(100deg, rgba(3,4,3,.84), transparent 52%, rgba(0,0,0,.42));
+}
+
+.art-card-image,
+.shop-card .art-image,
+.detail-hero > .art-image,
+.bag-thumb .art-image {
+  box-shadow: 0 14px 34px rgba(0,0,0,.24), inset 0 0 0 1px rgba(255,255,255,.022);
+}
+
+.art-card-image::after {
+  background: linear-gradient(135deg, transparent 0 60%, rgba(198,168,107,.10) 76%, transparent 95%);
+}
+
+.art-card:hover img {
+  transform: scale(1.018);
+}
+
+.collection-band {
+  background:
+    radial-gradient(circle at 84% 35%, rgba(198,168,107,.10), transparent 22%),
+    radial-gradient(circle at 18% 72%, rgba(39,52,46,.48), transparent 30%),
+    linear-gradient(135deg, #030403 0%, #0e1210 46%, #050605 100%);
+}
+
+.manifesto,
+.featured,
+.page-intro,
+.detail-page {
+  background:
+    radial-gradient(circle at 88% 14%, rgba(39,52,46,.34), transparent 25%),
+    radial-gradient(circle at 6% 88%, rgba(198,168,107,.035), transparent 24%),
+    #070807;
+}
+
+.page-intro::after {
+  display: none;
+}
+
+.eyebrow,
+.eyebrow-row,
+.page-intro > p {
+  color: #727a75;
+}
+
+.section-heading h2 em,
+.manifesto h2 em,
+.education-cta h2 em,
+.learn-statement h2 em,
+.course-list h2 em,
+.shipping-note h2 em,
+.process h2 em,
+.studio-credit h2 em,
+.detail-sidebar h1 em,
+.detail-notes h2 em,
+.not-found h1 em,
+.page-intro h1 em {
+  color: #a9b7ad;
+}
+
+.text-button,
+.back-link {
+  color: #9dad9f;
+}
+
+.text-button::after {
+  background: #53695e;
+}
+
+.outline-button:hover,
+.small-button:hover,
+.filter-row button.selected,
+.filter-row button:hover {
+  border-color: var(--secondary-line);
+  background: var(--secondary-soft);
+}
+
+.light-button {
+  border-color: var(--secondary-line);
+  color: #b5c3b9;
+  background: rgba(39,52,46,.18);
+}
+
+.light-button:hover {
+  border-color: rgba(116, 143, 127, .55);
+  background: rgba(39,52,46,.34);
+}
+
+.dark-button {
+  border-color: rgba(83,105,94,.56);
+  background: #53695e;
+  color: #070807;
+}
+
+.dark-button:hover {
+  background: #647c70;
+}
+
+.hero h1 em,
+.hero-title > p em,
+.detail-subtitle {
+  color: #b4c2b8 !important;
+}
+
+.hero-note span {
+  color: #8ea498;
+}
+
+.hero-scroll {
+  border-color: rgba(83,105,94,.62);
+}
+
+.hero-scroll:hover {
+  border-color: rgba(120,146,132,.78);
+  background: rgba(39,52,46,.72);
+}
+
+.bag-trigger:hover,
+.menu-trigger:hover {
+  border-color: rgba(83,105,94,.6);
+  background: rgba(39,52,46,.25);
+}
+
+.bag-drawer {
+  border-left-color: var(--secondary-line);
+}
+
+.toast {
+  background: #53695e;
+  color: #070807;
+}
+
+.site-footer {
+  background: #040504;
+}
+
+.footer-mark {
+  color: #a9b7ad;
+}
+
+/* Let the browser skip layout/paint work for long off-screen sections. */
+.section,
+.collection-band,
+.education-cta,
+.studio-feature,
+.shipping-note,
+.learn-intro,
+.process,
+.studio-credit,
+.related,
+.contact-grid {
+  content-visibility: auto;
+  contain-intrinsic-size: 800px;
+}
+
+/* Reduce expensive shadows and animated transitions on touch hardware. */
+@media (hover: none), (pointer: coarse) {
+  .art-card-image img,
+  .shop-card .art-image img,
+  .detail-hero > .art-image img {
+    transition: none;
+  }
+
+  .art-card:hover img {
+    transform: none;
+  }
+
+  .desktop-nav button::after {
+    transition: none;
+  }
+}
+
+@media (max-width: 980px) {
+  .art-card-image,
+  .shop-card .art-image,
+  .detail-hero > .art-image,
+  .bag-thumb .art-image {
+    box-shadow: 0 10px 26px rgba(0,0,0,.22);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
