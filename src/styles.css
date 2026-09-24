@@ -3113,7 +3113,8 @@ button, input, textarea, select {
 .plane-left.showroom-interactive:hover,
 .plane-right.showroom-interactive:hover,
 .plane-depth.showroom-interactive:hover {
-  transform: translate3d(var(--plane-x,0), var(--plane-y,0), var(--plane-z,0)) scale(1.025);
+  opacity: .72;
+  box-shadow: 0 16px 40px rgba(0,0,0,.24);
 }
 
 .catalogue-headline {
