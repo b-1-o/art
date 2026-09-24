@@ -230,7 +230,7 @@ export const artworks: Artwork[] = [
     price: 0,
     status: 'Sold',
     featured: true,
-    image: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/Thunder_Shower_by_Arthur_Dove%2C_1940%2C_oil_and_wax.JPG/960px-Thunder_Shower_by_Arthur_Dove%2C_1940%2C_oil_and_wax.JPG',
+    image: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Thunder_Shower_by_Arthur_Dove%2C_1940%2C_oil_and_wax.JPG/960px-Thunder_Shower_by_Arthur_Dove%2C_1940%2C_oil_and_wax.JPG',
     credit: 'Arthur Dove / Wikimedia Commons',
     creditUrl: 'https://commons.wikimedia.org/wiki/File:Thunder_Shower_by_Arthur_Dove,_1940,_oil_and_wax.JPG',
     description: 'A fluid American abstraction where atmospheric force is expressed through layered shapes and compressed colour.',
