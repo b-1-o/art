@@ -142,15 +142,25 @@ function ShowroomHero({ onNavigate }: { onNavigate: (p: string) => void }) {
   const frameRef = useRef<number | null>(null)
   const target = useRef({ x: 0, y: 0 })
   const current = useRef({ x: 0, y: 0 })
+  const dragging = useRef(false)
+  const dragStart = useRef({ x: 0, y: 0 })
+  const dragOrigin = useRef({ x: 0, y: 0 })
+  const [activeIndex, setActiveIndex] = useState(0)
+
+  const showcase = [0, 3, 6, 10].map((index) => artworks[index])
+  const active = showcase[activeIndex]
+  const left = showcase[(activeIndex + 1) % showcase.length]
+  const right = showcase[(activeIndex + 2) % showcase.length]
+  const depth = showcase[(activeIndex + 3) % showcase.length]
 
   useEffect(() => {
     const el = sceneRef.current
-    if (!el || window.matchMedia('(pointer: coarse)').matches) return
+    if (!el) return
 
     const update = () => {
       frameRef.current = null
-      current.current.x += (target.current.x - current.current.x) * 0.12
-      current.current.y += (target.current.y - current.current.y) * 0.12
+      current.current.x += (target.current.x - current.current.x) * 0.14
+      current.current.y += (target.current.y - current.current.y) * 0.14
       el.style.setProperty('--tilt-x', current.current.x.toFixed(2) + 'deg')
       el.style.setProperty('--tilt-y', current.current.y.toFixed(2) + 'deg')
 
@@ -159,71 +169,124 @@ function ShowroomHero({ onNavigate }: { onNavigate: (p: string) => void }) {
       }
     }
 
-    const onMove = (event: PointerEvent) => {
-      const rect = el.getBoundingClientRect()
-      const x = (event.clientX - rect.left) / rect.width - 0.5
-      const y = (event.clientY - rect.top) / rect.height - 0.5
-      target.current = { x: y * -7, y: x * 9 }
+    const requestUpdate = () => {
       if (frameRef.current === null) frameRef.current = requestAnimationFrame(update)
     }
 
-    const reset = () => {
+    const onMove = (event: PointerEvent) => {
+      if (dragging.current) {
+        const dx = (event.clientX - dragStart.current.x) * 0.055
+        const dy = (event.clientY - dragStart.current.y) * 0.055
+        target.current = {
+          x: Math.max(-12, Math.min(12, dragOrigin.current.x - dy)),
+          y: Math.max(-14, Math.min(14, dragOrigin.current.y + dx)),
+        }
+      } else if (!window.matchMedia('(pointer: coarse)').matches) {
+        const rect = el.getBoundingClientRect()
+        const x = (event.clientX - rect.left) / rect.width - 0.5
+        const y = (event.clientY - rect.top) / rect.height - 0.5
+        target.current = { x: y * -7, y: x * 9 }
+      }
+      requestUpdate()
+    }
+
+    const onDown = (event: PointerEvent) => {
+      const targetElement = event.target as HTMLElement
+      if (targetElement.closest('button')) return
+      dragging.current = true
+      dragStart.current = { x: event.clientX, y: event.clientY }
+      dragOrigin.current = { ...target.current }
+      el.setPointerCapture(event.pointerId)
+      el.classList.add('is-dragging')
+      requestUpdate()
+    }
+
+    const onUp = (event: PointerEvent) => {
+      dragging.current = false
+      if (el.hasPointerCapture(event.pointerId)) el.releasePointerCapture(event.pointerId)
+      el.classList.remove('is-dragging')
       target.current = { x: 0, y: 0 }
-      if (frameRef.current === null) frameRef.current = requestAnimationFrame(update)
+      requestUpdate()
+    }
+
+    const onLeave = () => {
+      if (dragging.current) return
+      target.current = { x: 0, y: 0 }
+      requestUpdate()
     }
 
     el.addEventListener('pointermove', onMove)
-    el.addEventListener('pointerleave', reset)
+    el.addEventListener('pointerdown', onDown)
+    el.addEventListener('pointerup', onUp)
+    el.addEventListener('pointercancel', onUp)
+    el.addEventListener('pointerleave', onLeave)
+
     return () => {
       el.removeEventListener('pointermove', onMove)
-      el.removeEventListener('pointerleave', reset)
+      el.removeEventListener('pointerdown', onDown)
+      el.removeEventListener('pointerup', onUp)
+      el.removeEventListener('pointercancel', onUp)
+      el.removeEventListener('pointerleave', onLeave)
       if (frameRef.current !== null) cancelAnimationFrame(frameRef.current)
     }
   }, [])
 
-  const main = artworks[0]
-  const sideA = artworks[3]
-  const sideB = artworks[6]
-  const depth = artworks[10]
+  const openActive = () => onNavigate('/works/' + active.id)
 
   return (
     <section className="showroom-hero">
       <div ref={sceneRef} className="showroom-scene">
         <div className="showroom-copy">
           <p className="hero-kicker">AER / PRIVATE DIGITAL SHOWROOM</p>
-          <div className="showroom-index">01 <span>/ 12</span></div>
+          <div className="showroom-index">{String(activeIndex + 1).padStart(2, '0')} <span>/ 04</span></div>
           <h1>Art,<br /><em>with depth.</em></h1>
-          <p className="showroom-description">A curated archive reimagined as an interactive luxury space — built to feel closer to a product experience than a static gallery.</p>
+          <p className="showroom-description">An interactive luxury room: move the scene, drag the perspective, select a work, then open its full record.</p>
           <div className="showroom-actions">
-            <button className="dark-button" onClick={() => onNavigate('/shop')}>Enter the shop <ArrowRight size={15} /></button>
+            <button className="dark-button" onClick={() => onNavigate('/shop')}>Enter the vault <ArrowRight size={15} /></button>
             <button className="showroom-link" onClick={() => onNavigate('/works')}>Browse archive <ArrowUpRight size={15} /></button>
           </div>
         </div>
 
-        <div className="showroom-stage" aria-hidden="true">
+        <div className="showroom-stage" aria-label="Interactive 3D artwork showroom">
           <div className="showroom-floor" />
           <div className="showroom-orbit orbit-a" />
           <div className="showroom-orbit orbit-b" />
-          <div className="art-plane plane-depth"><img src={depth.image} alt="" loading="lazy" decoding="async" /></div>
-          <div className="art-plane plane-left"><img src={sideA.image} alt="" loading="lazy" decoding="async" /></div>
-          <div className="art-plane plane-right"><img src={sideB.image} alt="" loading="lazy" decoding="async" /></div>
-          <div className="art-plane plane-main">
-            <img src={main.image} alt={main.title} fetchPriority="high" decoding="async" />
-            <span className="plane-label">AER / 001</span>
-            <span className="plane-title">{main.title}<small>{main.subtitle}</small></span>
-          </div>
+
+          <button type="button" className="art-plane plane-depth showroom-interactive" onClick={() => setActiveIndex((activeIndex + 3) % showcase.length)} aria-label={'Bring ' + depth.title + ' forward'}>
+            <img src={depth.image} alt="" loading="lazy" decoding="async" />
+          </button>
+          <button type="button" className="art-plane plane-left showroom-interactive" onClick={() => setActiveIndex((activeIndex + 1) % showcase.length)} aria-label={'Bring ' + left.title + ' forward'}>
+            <img src={left.image} alt="" loading="lazy" decoding="async" />
+          </button>
+          <button type="button" className="art-plane plane-right showroom-interactive" onClick={() => setActiveIndex((activeIndex + 2) % showcase.length)} aria-label={'Bring ' + right.title + ' forward'}>
+            <img src={right.image} alt="" loading="lazy" decoding="async" />
+          </button>
+          <button type="button" className="art-plane plane-main showroom-interactive" onClick={openActive} aria-label={'Open ' + active.title}>
+            <img src={active.image} alt={active.title} fetchPriority="high" decoding="async" />
+            <span className="plane-label">AER / {active.number}</span>
+            <span className="plane-title">{active.title}<small>{active.subtitle}</small></span>
+          </button>
           <div className="showroom-reflection" />
+
+          <div className="showroom-controls">
+            <button type="button" onClick={() => setActiveIndex((activeIndex + showcase.length - 1) % showcase.length)} aria-label="Previous artwork"><ArrowLeft size={15} /></button>
+            <span>DRAG / SELECT</span>
+            <button type="button" onClick={() => setActiveIndex((activeIndex + 1) % showcase.length)} aria-label="Next artwork"><ArrowRight size={15} /></button>
+          </div>
+          <button type="button" className="showroom-reset" onClick={() => {
+            target.current = { x: 0, y: 0 }
+            setActiveIndex(0)
+          }}>RESET VIEW</button>
         </div>
 
         <div className="showroom-bottom">
-          <span>MOVE YOUR CURSOR TO EXPLORE DEPTH</span>
+          <span>MOVE / DRAG TO ROTATE · CLICK AN ARTWORK TO CENTER IT · CLICK CENTER TO OPEN</span>
           <span>12 WORKS / 08 ARTISTS / PRIVATE ARCHIVE</span>
         </div>
       </div>
     </section>
   )
 }
-
 function Home({ onNavigate }: { onNavigate: (p: string) => void }) {
   return <>
     <ShowroomHero onNavigate={onNavigate} />
