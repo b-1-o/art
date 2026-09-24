@@ -103,34 +103,6 @@ export default function App() {
   )
 }
 
-function BotanicalVeil({ tone = 'sage', className = '' }: { tone?: 'sage' | 'rose' | 'gold'; className?: string }) {
-  return (
-    <div className={'botanical-veil botanical-' + tone + ' ' + className} aria-hidden="true">
-      <svg viewBox="0 0 520 520" role="presentation">
-        <g fill="none" stroke="currentColor" strokeLinecap="round">
-          <path d="M54 510 C58 386 112 334 90 254 C73 191 122 137 184 116 C240 97 294 72 338 12" strokeWidth="4" opacity=".68" />
-          <path d="M123 512 C156 407 207 360 220 277 C231 208 287 159 362 141 C410 129 432 86 467 26" strokeWidth="2.6" opacity=".45" />
-          <path d="M29 432 C93 411 150 426 191 470" strokeWidth="2" opacity=".28" />
-        </g>
-        <g fill="currentColor" opacity=".42">
-          <ellipse cx="124" cy="325" rx="30" ry="12" transform="rotate(-38 124 325)" />
-          <ellipse cx="163" cy="287" rx="27" ry="11" transform="rotate(28 163 287)" />
-          <ellipse cx="205" cy="224" rx="31" ry="12" transform="rotate(-42 205 224)" />
-          <ellipse cx="271" cy="171" rx="27" ry="10" transform="rotate(28 271 171)" />
-          <ellipse cx="329" cy="125" rx="29" ry="11" transform="rotate(-36 329 125)" />
-          <ellipse cx="390" cy="92" rx="26" ry="10" transform="rotate(30 390 92)" />
-        </g>
-        <g fill="currentColor" opacity=".25">
-          <circle cx="102" cy="244" r="15" />
-          <circle cx="194" cy="146" r="12" />
-          <circle cx="312" cy="84" r="14" />
-          <circle cx="411" cy="51" r="10" />
-        </g>
-      </svg>
-    </div>
-  )
-}
-
 function Header({ path, bagCount, menu, setMenu, onBag }: { path: Path; bagCount: number; menu: boolean; setMenu: (v: boolean) => void; onBag: () => void }) {
   return (
     <>
@@ -167,15 +139,15 @@ function Card({ artwork, compact = false }: { artwork: Artwork; compact?: boolea
 
 function Home({ onNavigate }: { onNavigate: (p: string) => void }) {
   return <>
-    <section className="hero"><Image artwork={artworks[7]} priority /><div className="hero-scrim" /><BotanicalVeil tone="sage" className="hero-botanical" /><div className="hero-light one" /><div className="hero-light two" /><div className="hero-grid"><div className="hero-kicker">AER / PRIVATE ART SALON</div><div className="hero-title"><p>THE IMAGE LIVES<br /><em>BEYOND THE MOMENT.</em></p><h1>Seen slowly.<br />Held <em>closely.</em></h1></div><div className="hero-note"><span>01—06</span><p>A private digital salon for paintings chosen for light, material, composition and lasting visual presence.</p></div><button className="hero-scroll" onClick={() => onNavigate('/works')}>ENTER THE WORK <ArrowDown /></button></div><div className="hero-bottom"><span>LOS ANGELES / 2026</span><span>SCROLL TO EXPLORE <i /></span></div></section>
+    <section className="hero"><Image artwork={artworks[7]} priority /><div className="hero-scrim" /><div className="hero-grid"><div className="hero-kicker">AER / PRIVATE ART SALON</div><div className="hero-title"><p>THE IMAGE LIVES<br /><em>BEYOND THE MOMENT.</em></p><h1>Seen slowly.<br />Held <em>closely.</em></h1></div><div className="hero-note"><span>01—06</span><p>A private digital salon for paintings chosen for light, material, composition and lasting visual presence.</p></div><button className="hero-scroll" onClick={() => onNavigate('/works')}>ENTER THE WORK <ArrowDown /></button></div><div className="hero-bottom"><span>PRIVATE SALON / 2026</span><span>SCROLL TO EXPLORE <i /></span></div></section>
 
-    <section className="section manifesto"><BotanicalVeil tone="rose" className="section-botanical left" /><div className="eyebrow-row"><span>THE STUDIO NOTE</span><span>01 / 06</span></div><div className="manifesto-grid"><h2>Art can be quiet<br /><em>and still hold you.</em></h2><div><p>The studio works across painting, paper and small objects — building images that leave room for the viewer to finish the thought.</p><button className="text-button" onClick={() => onNavigate('/studio')}>Inside the studio <ArrowUpRight size={15} /></button></div></div></section>
+    <section className="section manifesto"><div className="eyebrow-row"><span>THE STUDIO NOTE</span><span>01 / 06</span></div><div className="manifesto-grid"><h2>Form can be silent<br /><em>and still command the room.</em></h2><div><p>Geometric studies, colour fields and symbolic forms from the early language of abstraction.</p><button className="text-button" onClick={() => onNavigate('/studio')}>Inside the studio <ArrowUpRight size={15} /></button></div></div></section>
 
-    <section className="section featured"><div className="section-heading"><div><p className="eyebrow">SELECTED WORKS</p><h2>Recent <em>studies.</em></h2></div><button className="outline-button" onClick={() => onNavigate('/works')}>View catalogue <ArrowRight size={15} /></button></div><div className="featured-grid">{artworks.filter((a) => a.featured).map((a) => <Card key={a.id} artwork={a} />)}</div></section>
+    <section className="section featured"><div className="section-heading"><div><p className="eyebrow">SELECTED ABSTRACTIONS</p><h2>Selected <em>abstractions.</em></h2></div><button className="outline-button" onClick={() => onNavigate('/works')}>View catalogue <ArrowRight size={15} /></button></div><div className="featured-grid">{artworks.filter((a) => a.featured).map((a) => <Card key={a.id} artwork={a} />)}</div></section>
 
-    <section className="collection-band"><BotanicalVeil tone="gold" className="band-botanical" /><div className="band-index">02 / 03</div><div><p className="eyebrow">PRIVATE COLLECTION</p><h2>BLACK<br /><em>GALLERY.</em></h2></div><div><p>A curated room of paintings, reduced to light, surface, scale and silence — presented without visual noise.</p><button className="light-button" onClick={() => onNavigate('/works')}>Enter collection <ArrowUpRight size={15} /></button></div></section>
+    <section className="collection-band"><div className="band-index">02 / 03</div><div><p className="eyebrow">PRIVATE COLLECTION</p><h2>BLACK<br /><em>GALLERY.</em></h2></div><div><p>A curated room of paintings, reduced to light, surface, scale and silence — presented without visual noise.</p><button className="light-button" onClick={() => onNavigate('/works')}>Enter collection <ArrowUpRight size={15} /></button></div></section>
 
-    <section className="section education-cta"><BotanicalVeil tone="rose" className="education-botanical" /><div><p className="eyebrow">ART JOURNAL</p><h2>Look closer.<br /><em>Read the image.</em></h2><p>Notes on artists, materials, composition and the visual language behind the collection.</p><button className="text-button dark" onClick={() => onNavigate('/learn')}>Explore learning <ArrowUpRight size={15} /></button></div><div className="education-orbit"><span>PROCESS</span><span>COLOR</span><span>FORM</span><span>ATTENTION</span></div></section>
+    <section className="section education-cta"><div><p className="eyebrow">ART JOURNAL</p><h2>Look closer.<br /><em>Read the image.</em></h2><p>Notes on artists, materials, composition and the visual language behind the collection.</p><button className="text-button dark" onClick={() => onNavigate('/learn')}>Explore learning <ArrowUpRight size={15} /></button></div><div className="education-orbit"><span>PROCESS</span><span>COLOR</span><span>FORM</span><span>ATTENTION</span></div></section>
   </>
 }
 
@@ -213,7 +185,7 @@ function Faq({ q, a }: { q: string; a: string }) {
 }
 
 function Studio({ onNavigate }: { onNavigate: (p: string) => void }) {
-  return <div className="page-wrap"><Intro eyebrow="04 / STUDIO" title={<>A practice built<br /><em>around attention.</em></>} body="The AER studio is a fictional contemporary practice for this portfolio project — designed as a complete artist identity, catalogue and commercial experience." /><section className="section-tight studio-feature"><BotanicalVeil tone="sage" className="studio-botanical" /><div className="studio-image"><Image artwork={artworks[4]} priority /></div><div className="studio-copy"><p className="eyebrow">STATEMENT</p><h2>Nothing is finished until the eye knows where to rest.</h2><p>The studio moves between painting, paper and object-making. Each medium asks for a different pace: painting can accumulate; paper can stay provisional; objects can interrupt the room.</p><p>The visual language is intentionally restrained so the work can remain the loudest thing on the page.</p><button className="dark-button" onClick={() => onNavigate('/contact')}>Commission a work <ArrowUpRight size={15} /></button></div></section><section className="section facts-grid">{studioFacts.map(([n, t]) => <div key={t}><strong>{n}</strong><span>{t}</span></div>)}</section><section className="section process"><div className="section-heading"><div><p className="eyebrow">PROCESS</p><h2>From first <em>gesture.</em></h2></div></div>{[['01', 'Gather', 'References, fragments, places and accidents become the first layer.'], ['02', 'Reduce', 'The work is edited until the unnecessary parts stop competing for attention.'], ['03', 'Hold', 'The final surface stays open enough for the viewer to enter it.']].map(([n, t, d]) => <div className="process-row" key={n}><span>{n}</span><h3>{t}</h3><p>{d}</p><ArrowUpRight size={17} /></div>)}</section></div>
+  return <div className="page-wrap"><Intro eyebrow="04 / STUDIO" title={<>A practice built<br /><em>around attention.</em></>} body="The AER studio is a fictional contemporary practice for this portfolio project — designed as a complete artist identity, catalogue and commercial experience." /><section className="section-tight studio-feature"><div className="studio-image"><Image artwork={artworks[4]} priority /></div><div className="studio-copy"><p className="eyebrow">STATEMENT</p><h2>Nothing is finished until the eye knows where to rest.</h2><p>The studio moves between painting, paper and object-making. Each medium asks for a different pace: painting can accumulate; paper can stay provisional; objects can interrupt the room.</p><p>The visual language is intentionally restrained so the work can remain the loudest thing on the page.</p><button className="dark-button" onClick={() => onNavigate('/contact')}>Commission a work <ArrowUpRight size={15} /></button></div></section><section className="section facts-grid">{studioFacts.map(([n, t]) => <div key={t}><strong>{n}</strong><span>{t}</span></div>)}</section><section className="section process"><div className="section-heading"><div><p className="eyebrow">PROCESS</p><h2>From first <em>gesture.</em></h2></div></div>{[['01', 'Gather', 'References, fragments, places and accidents become the first layer.'], ['02', 'Reduce', 'The work is edited until the unnecessary parts stop competing for attention.'], ['03', 'Hold', 'The final surface stays open enough for the viewer to enter it.']].map(([n, t, d]) => <div className="process-row" key={n}><span>{n}</span><h3>{t}</h3><p>{d}</p><ArrowUpRight size={17} /></div>)}</section></div>
 }
 
 function Contact({ onNavigate }: { onNavigate: (p: string) => void }) {
