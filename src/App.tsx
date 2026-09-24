@@ -112,20 +112,12 @@ function BotanicalVeil({ tone = 'sage', className = '' }: { tone?: 'sage' | 'ros
   return (
     <div className={'botanical-veil botanical-' + tone + ' ' + className} aria-hidden="true">
       <svg viewBox="0 0 520 520" role="presentation">
-        <defs>
-          <linearGradient id={'vine-' + tone} x1="0%" y1="100%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="currentColor" stopOpacity=".15" />
-            <stop offset="52%" stopColor="currentColor" stopOpacity=".8" />
-            <stop offset="100%" stopColor="currentColor" stopOpacity=".2" />
-          </linearGradient>
-          <filter id={'soft-' + tone}><feGaussianBlur stdDeviation="1.2" /></filter>
-        </defs>
-        <g fill="none" stroke={'url(#vine-' + tone + ')'} strokeLinecap="round">
-          <path d="M54 510 C58 386 112 334 90 254 C73 191 122 137 184 116 C240 97 294 72 338 12" strokeWidth="4" />
-          <path d="M123 512 C156 407 207 360 220 277 C231 208 287 159 362 141 C410 129 432 86 467 26" strokeWidth="2.6" opacity=".65" />
-          <path d="M29 432 C93 411 150 426 191 470" strokeWidth="2" opacity=".45" />
+        <g fill="none" stroke="currentColor" strokeLinecap="round">
+          <path d="M54 510 C58 386 112 334 90 254 C73 191 122 137 184 116 C240 97 294 72 338 12" strokeWidth="4" opacity=".68" />
+          <path d="M123 512 C156 407 207 360 220 277 C231 208 287 159 362 141 C410 129 432 86 467 26" strokeWidth="2.6" opacity=".45" />
+          <path d="M29 432 C93 411 150 426 191 470" strokeWidth="2" opacity=".28" />
         </g>
-        <g fill="currentColor" opacity=".58" filter={'url(#soft-' + tone + ')'}>
+        <g fill="currentColor" opacity=".42">
           <ellipse cx="124" cy="325" rx="30" ry="12" transform="rotate(-38 124 325)" />
           <ellipse cx="163" cy="287" rx="27" ry="11" transform="rotate(28 163 287)" />
           <ellipse cx="205" cy="224" rx="31" ry="12" transform="rotate(-42 205 224)" />
@@ -133,7 +125,7 @@ function BotanicalVeil({ tone = 'sage', className = '' }: { tone?: 'sage' | 'ros
           <ellipse cx="329" cy="125" rx="29" ry="11" transform="rotate(-36 329 125)" />
           <ellipse cx="390" cy="92" rx="26" ry="10" transform="rotate(30 390 92)" />
         </g>
-        <g fill="currentColor" opacity=".46">
+        <g fill="currentColor" opacity=".25">
           <circle cx="102" cy="244" r="15" />
           <circle cx="194" cy="146" r="12" />
           <circle cx="312" cy="84" r="14" />
